@@ -1,25 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:medichub/screens/profile_screen.dart';
+import '../screens/home_screen.dart';
+import '../screens/doctors_list_screen.dart';
 
-class App extends StatefulWidget {
-  const App({super.key});
-
+class MainLayout extends StatefulWidget {
   @override
-  State<App> createState() => _AppState();
+  _MainLayoutState createState() => _MainLayoutState();
 }
 
-class _AppState extends State<App> {
-
+class _MainLayoutState extends State<MainLayout> {
   int currentPageIndex = 0;
+
+  final List<Widget> _screens = [
+    HomeScreen(),
+    DoctorsListScreen(),
+    ProfileScreen(),
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      body: _screens[currentPageIndex],
       bottomNavigationBar: NavigationBarTheme(
         data: NavigationBarThemeData(
           labelTextStyle: WidgetStateProperty.resolveWith<TextStyle>(
-              (Set<WidgetState> states) => states.contains(WidgetState.selected)
-                ? const TextStyle(color: Color(0xFFCEFDFF))
-                : const TextStyle(color: Colors.white)
+                  (Set<WidgetState> states) => states.contains(WidgetState.selected)
+                  ? const TextStyle(color: Color(0xFFCEFDFF))
+                  : const TextStyle(color: Colors.white)
           ),
         ),
         child: NavigationBar(
@@ -48,8 +55,6 @@ class _AppState extends State<App> {
           indicatorColor: Colors.white,
         ),
       ),
-      body: Text('Hola'),
     );
   }
 }
-
