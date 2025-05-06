@@ -1,5 +1,6 @@
 import "package:flutter/material.dart";
 import 'package:medichub/const.dart' as cons;
+import 'package:medichub/layout/layout.dart';
 import 'package:medichub/signup.dart';
 
 class Login extends StatefulWidget {
@@ -119,7 +120,14 @@ class _LoginState extends State<Login> {
                     ),
                     SizedBox(height: 40,),
                     ElevatedButton(
-                      onPressed: (){},
+                      onPressed: (){
+                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MainLayout()));
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: cons.Prussian_Blue,
+                        padding: EdgeInsets.symmetric(horizontal: 100,vertical: 12),
+                        elevation: 5,
+                      ),
                       child: Text(
                         'Iniciar sesión',
                         style: TextStyle(
@@ -127,11 +135,6 @@ class _LoginState extends State<Login> {
                             fontSize: 22,
                             color: Colors.white
                         ),
-                      ),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: cons.Prussian_Blue,
-                        padding: EdgeInsets.symmetric(horizontal: 100,vertical: 12),
-                        elevation: 5,
                       ),
                     ),
                     SizedBox(height: 50,),

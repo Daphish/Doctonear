@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:medichub/app.dart';
-import 'package:medichub/login.dart';
 import 'package:medichub/signup.dart';
 
 void main() {
