@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:medichub/screens/profile.dart';
 import 'package:medichub/screens/appointments_screen.dart';
 import 'package:medichub/screens/profile_screen.dart';
 import '../screens/home_screen.dart';
@@ -25,7 +26,16 @@ class MainLayoutState extends State<MainLayout> {
           searchQuery = query;
         });
       }),
-      DoctorsListScreen(query: searchQuery),
+      DoctorsListScreen(query: searchQuery,iconPress: (){
+        setState(() {
+          homeSubPageIndex=2;
+        });
+      }),
+      Profile(backPress:(){
+        setState(() {
+          homeSubPageIndex=1;
+        });
+      })
     ];
 
     final List<Widget> _screens = [

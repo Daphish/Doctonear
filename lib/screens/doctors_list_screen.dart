@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:medichub/const.dart' as con;
+import 'package:medichub/screens/profile.dart';
 
 class DoctorsListScreen extends StatefulWidget {
   final String query;
+  final void Function() iconPress;
 
-  const DoctorsListScreen({super.key, required this.query});
+  const DoctorsListScreen({super.key, required this.query, required this.iconPress});
 
   @override
   State<DoctorsListScreen> createState() => _DoctorsListScreenState();
@@ -71,7 +73,7 @@ class _DoctorsListScreenState extends State<DoctorsListScreen> {
                           fontSize: 16,
                         ),
                         decoration: InputDecoration(
-                          hintText: 'Rol',
+                          hintText: 'especialidad,enfermedad o nombre',
                           hintStyle: const TextStyle(
                             fontFamily: 'cuerpo',
                             fontSize: 16,
@@ -100,7 +102,6 @@ class _DoctorsListScreenState extends State<DoctorsListScreen> {
                   ],
                 ),
               ),
-
               Padding(
                 padding: const EdgeInsets.only(right: 16.0, bottom: 8),
                 child: Row(
@@ -119,7 +120,6 @@ class _DoctorsListScreenState extends State<DoctorsListScreen> {
                   ],
                 ),
               ),
-
               Expanded(
                 child: ListView.builder(
                   itemCount: filteredDoctors.length,
@@ -157,11 +157,16 @@ class _DoctorsListScreenState extends State<DoctorsListScreen> {
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(
-                                      doctor['name'] ?? '',
-                                      style: const TextStyle(
-                                        fontFamily: 'butLog',
-                                        fontSize: 16,
+                                    GestureDetector(
+                                      onTap: (){
+                                        widget.iconPress();
+                                      },
+                                      child: Text(
+                                        doctor['name'] ?? '',
+                                        style: const TextStyle(
+                                          fontFamily: 'butLog',
+                                          fontSize: 16,
+                                        ),
                                       ),
                                     ),
                                     Text(
@@ -282,12 +287,17 @@ class _DoctorsListScreenState extends State<DoctorsListScreen> {
                                         ),
                                       ),
                                       SizedBox(width: 10,),
-                                      Image.asset('assets/images/clock_white.png',width: 20,)
+                                      Image.asset('assets/images/calendar_white.png',width: 20,)
                                     ],
                                   ),
                                   style: ElevatedButton.styleFrom(
+                                    minimumSize:Size(20, 35),
                                       backgroundColor: con.Cerulean,
-                                    padding: EdgeInsets.symmetric(horizontal: 20),
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(15)
+                                    ),
+
+                                    padding: EdgeInsets.symmetric(horizontal:15),
 
                                   ),
                                 )

@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:medichub/const.dart' as cons;
+import 'package:medichub/screens/doctors_list_screen.dart';
+import 'package:medichub/screens/home_screen.dart';
 
 class Profile extends StatefulWidget {
-  const Profile({super.key});
+  final void Function() backPress;
+  const Profile({super.key, required this.backPress});
 
   @override
   State<Profile> createState() => _ProfileState();
@@ -23,7 +26,12 @@ class _ProfileState extends State<Profile> {
                       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                       child: Row(
                         children: [
-                          Image.asset("assets/images/rodBlack.png", height: 48),
+                          GestureDetector(
+                            onTap: (){
+                              widget.backPress();
+                            },
+                            child:Image.asset("assets/images/rodBlack.png", height: 48) ,
+                          ),
                           const SizedBox(width:10),
                           Expanded(
                             child: TextFormField(
@@ -61,10 +69,10 @@ class _ProfileState extends State<Profile> {
                         ],
                       ),
                     ),
-
                     Padding(
                       padding: const EdgeInsets.only(right: 20.0, bottom: 8, left: 20),
                       child: Column(
+                        mainAxisSize: MainAxisSize.max,
                         children: [
                           ClipRRect(
                             borderRadius: BorderRadius.circular(100),
@@ -116,7 +124,7 @@ class _ProfileState extends State<Profile> {
                                 ),
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: cons.Cerulean,
-                                  padding: EdgeInsets.symmetric(horizontal: 45),
+                                  padding: EdgeInsets.symmetric(horizontal: 20),
 
 
                                 ),
@@ -140,7 +148,7 @@ class _ProfileState extends State<Profile> {
                                 ),
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: cons.Cerulean,
-                                  padding: EdgeInsets.symmetric(horizontal: 45),
+                                  padding: EdgeInsets.symmetric(horizontal: 20),
 
 
                                 ),
@@ -222,12 +230,34 @@ class _ProfileState extends State<Profile> {
                               )
                             ],
                           ),
-
-
+                          SizedBox(height: 20),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Comentarios',
+                                style: TextStyle(
+                                    fontSize: 20,
+                                    fontFamily: 'bold'
+                                ),
+                              )
+                            ],
+                          ),
+                          TextFormField(
+                            style: TextStyle(
+                              fontFamily: 'cuerpo',
+                              fontSize: 16,
+                            ),
+                            decoration: InputDecoration(
+                                hintText: 'Agrega comentario'
+                            ),
+                          ),
+                          Text(
+                            'Buen doctor'
+                          )
                         ],
                       ),
                     ),
-
                   ],
                 ),
               )
