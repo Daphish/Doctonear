@@ -5,8 +5,14 @@ import 'package:medichub/screens/appointments_screen.dart';
 import 'package:medichub/screens/home_screen.dart';
 import 'package:medichub/signup.dart';
 import'package:medichub/screens/doctors_list_screen.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
 }
 
