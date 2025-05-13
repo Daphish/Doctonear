@@ -171,11 +171,13 @@ class _ProfileState extends State<Profile> {
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                'Soy la Dra. Guayaba Rodríguez  -Egresada de la Universidad Autónoma de San Luis Potosí. -Especialidad de Ginecologia y Obstetricia por parte de la UASLP...',
-                                style: TextStyle(
-                                    fontSize: 14,
-                                    fontFamily: 'cuerpo'
+                              Expanded(
+                                child: Text(
+                                  'Soy la Dra. Guayaba Rodríguez  -Egresada de la Universidad Autónoma de San Luis Potosí. -Especialidad de Ginecologia y Obstetricia por parte de la UASLP...',
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      fontFamily: 'cuerpo'
+                                  ),
                                 ),
                               )
                             ],
@@ -209,24 +211,28 @@ class _ProfileState extends State<Profile> {
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                'Dirección',
-                                style: TextStyle(
-                                    fontSize: 20,
-                                    fontFamily: 'bold'
-                                ),
-                              )
+                             Expanded(
+                               child:  Text(
+                                 'Dirección',
+                                 style: TextStyle(
+                                     fontSize: 20,
+                                     fontFamily: 'bold'
+                                 ),
+                               ),
+                             )
                             ],
                           ),
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                'Av Himno Nacional 815,Las Águilas 3ra Sección 78134',
-                                style: TextStyle(
-                                    fontSize: 14,
-                                    fontFamily: 'cuerpo'
-                                ),
+                              Expanded(
+                                child:Text(
+                                  'Av Himno Nacional 815,Las Águilas 3ra Sección 78134',
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      fontFamily: 'cuerpo'
+                                  ),
+                                )
                               )
                             ],
                           ),

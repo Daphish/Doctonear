@@ -161,13 +161,15 @@ class _DoctorsListScreenState extends State<DoctorsListScreen> {
                                       onTap: (){
                                         widget.iconPress();
                                       },
-                                      child: Text(
-                                        doctor['name'] ?? '',
-                                        style: const TextStyle(
-                                          fontFamily: 'butLog',
-                                          fontSize: 16,
+                                      child: Expanded(
+                                        child: Text(
+                                          doctor['name'] ?? '',
+                                          style: const TextStyle(
+                                            fontFamily: 'butLog',
+                                            fontSize: 16,
+                                          ),
                                         ),
-                                      ),
+                                      )
                                     ),
                                     Text(
                                       doctor['specialty'] ?? '',
@@ -201,13 +203,18 @@ class _DoctorsListScreenState extends State<DoctorsListScreen> {
                                           children: [
                                             Row(
                                               children: [
-                                                Image.asset('assets/images/gps.png', width: 20,),
-                                                SizedBox(width: 5,),
-                                                Text(
-                                                  'Av Himno Nacional 815,Las Águilas 3ra Sección,78134',
-                                                  style: TextStyle(
-                                                      color: Colors.black,
-                                                      fontSize: 14
+                                                Expanded(
+                                                  flex:2,
+                                                  child:Image.asset('assets/images/gps.png', width: 20,),
+                                                ),
+                                                Expanded(
+                                                  flex:6,
+                                                  child:Text(
+                                                    'Av Himno Nacional 815,Las Águilas 3ra Sección,78134',
+                                                    style: TextStyle(
+                                                        color: Colors.black,
+                                                        fontSize: 14
+                                                    ),
                                                   ),
                                                 ),
                                               ],
