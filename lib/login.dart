@@ -1,7 +1,12 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import "package:flutter/material.dart";
 import 'package:medichub/const.dart' as cons;
 import 'package:medichub/layout/layout.dart';
 import 'package:medichub/signup.dart';
+import 'package:medichub/singleton.dart';
+import 'package:medichub/utils/utils.dart';
+import 'package:flutter/foundation.dart';
+import 'package:medichub/widgets/snackbar.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -11,7 +16,71 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  Singleton singleton = Singleton();
   bool passIcon=true;
+  User? _user;
+
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passController = TextEditingController();
+
+  void login() async {
+    setState(() {
+      singleton.loader = true;
+    });
+
+    bool siHayInternet = false;
+    if(!kIsWeb) {
+      if (await Utils.tieneConexionInternet()) {
+        siHayInternet = true;
+      } else {
+        showSnackbar(3, 'Sin conexión a internet', 'Favor de revisar tu conexión a internet', context);
+      }
+    } else {
+      siHayInternet = true;
+    }
+
+    String email = emailController.text.trim();
+    String password = passController.text.trim();
+
+    if(siHayInternet) {
+      if(email.isNotEmpty && password.isNotEmpty) {
+        if (isValidEmail(email.trim())) {
+          if (password.length >= 6) {
+            _user = await singleton.signIn(email, password);
+            if(_user != null) {
+              setState(() {
+                singleton.loader = false;
+                Navigator.pushReplacement(context,
+                    MaterialPageRoute(builder:
+                        (context)=>MainLayout()));
+              });
+            } else {
+              if (singleton.messageLogin.isNotEmpty) {
+                if (singleton.messageLogin.contains('uso')) {
+                  setState(() {
+                    singleton.loader = false;
+                  });
+                } else {
+                  showSnackbar(3, 'Inicio de Sesión', singleton.messageLogin, context);
+                }
+              }
+            }
+          } else {
+            showSnackbar(2, 'Inicio de Sesión', singleton.messageLogin, context);
+          }
+        } else {
+          showSnackbar(3, 'Inicio de Sesión', 'El correo no tiene el formato directo', context);
+        }
+      } else {
+        showSnackbar(3, 'Inicio de Sesión', 'Todos los campos deben de estar llenos', context);
+      }
+    }
+
+    setState(() {
+      singleton.loader = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,6 +117,7 @@ class _LoginState extends State<Login> {
                       ),
                     ),
                     TextFormField(
+                      controller: emailController,
                       style: TextStyle(
                         fontFamily: 'cuerpo',
                         fontSize: 16,
@@ -79,6 +149,7 @@ class _LoginState extends State<Login> {
                     ),
                     SizedBox(height: 7),
                     TextFormField(
+                      controller: passController,
                       style: TextStyle(
                         fontFamily: 'cuerpo',
                         fontSize: 16,
@@ -121,7 +192,7 @@ class _LoginState extends State<Login> {
                     SizedBox(height: 40,),
                     ElevatedButton(
                       onPressed: (){
-                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MainLayout()));
+                        login();
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: cons.Prussian_Blue,
@@ -147,9 +218,7 @@ class _LoginState extends State<Login> {
                     ),
                     GestureDetector(
                       onTap: (){
-                        Navigator.pushReplacement(context,
-                            MaterialPageRoute(builder:
-                                (context)=>Signup()));
+                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Signup()));
                       },
                       child: Text(
                         'Regístrate',
@@ -170,5 +239,12 @@ class _LoginState extends State<Login> {
         ),
       ),
     );
+  }
+
+  bool isValidEmail(String email) {
+    final RegExp emailRegExp = RegExp(
+        r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+    );
+    return emailRegExp.hasMatch(email);
   }
 }
