@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "308192094271",
+    "project_id": "doctonear-b270e",
+    "storage_bucket": "doctonear-b270e.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:308192094271:android:35d5cc2d3b8acbff66b08a",
+        "android_client_info": {
+          "package_name": "com.example.medichub"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB1pcrsGpORQoJql2iO7Voq3UE0ONFwvV0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
