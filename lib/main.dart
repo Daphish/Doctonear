@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:medichub/login.dart';
+import 'package:medichub/screens/profile.dart';
+import 'package:medichub/screens/appointments_screen.dart';
+import 'package:medichub/screens/home_screen.dart';
 import 'package:medichub/signup.dart';
+import'package:medichub/screens/doctors_list_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 

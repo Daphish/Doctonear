@@ -65,6 +65,9 @@ flutter:
     - family: butLog
       fonts:
         - asset: assets/fonts/NotoSansDevanagari-SemiBold.ttf
+    - family: bold
+      fonts:
+        - asset: assets/fonts/NotoSansDevanagari-Bold.ttf
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
