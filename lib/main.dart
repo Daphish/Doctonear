@@ -4,6 +4,7 @@ import 'package:medichub/screens/profile.dart';
 import 'package:medichub/screens/appointments_screen.dart';
 import 'package:medichub/screens/home_screen.dart';
 import 'package:medichub/screens/profile_screen.dart';
+import 'package:medichub/screens/schedule_appointment.dart';
 import 'package:medichub/signup.dart';
 import'package:medichub/screens/doctors_list_screen.dart';
 import 'package:firebase_core/firebase_core.dart';

@@ -31,6 +31,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
        body: SafeArea(
          child: Container(
+           height: MediaQuery.of(context).size.height,
              color: Colors.white,
              child:Padding(
                padding: EdgeInsets.all(15),
