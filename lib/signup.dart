@@ -23,6 +23,17 @@ class _SignupState extends State<Signup> {
 
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passController = TextEditingController();
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController ageController = TextEditingController();
+  final TextEditingController genderController = TextEditingController();
+  final TextEditingController telephoneController = TextEditingController();
+  final TextEditingController cedulaController = TextEditingController();
+  final TextEditingController descriptionController = TextEditingController();
+  final TextEditingController directionController = TextEditingController();
+  final TextEditingController servicesController = TextEditingController();
+
+  String? _selectedRole;
+  final List<String> _roles = ['Paciente', 'Doctor'];
 
   void register() async {
     setState(() {
@@ -43,27 +54,58 @@ class _SignupState extends State<Signup> {
     if (siHayInternet) {
       String email = emailController.text.trim();
       String password = passController.text.trim();
+      int edad = int.parse(ageController.text.trim());
+      String name = nameController.text.trim();
+      String gender = genderController.text.trim();
+      int telephone = int.parse(telephoneController.text.trim());
+      String cedula = cedulaController.text.trim();
+      String description = descriptionController.text.trim();
+      String direction = directionController.text.trim();
+      String services = servicesController.text.trim();
+
       singleton.messageLogin = '';
 
       if (email.isNotEmpty && password.isNotEmpty) {
         if (isValidEmail(email.trim())) {
           if (password.length >= 6) {
-            _user = await singleton.registerUser(email, password, context);
-            if (_user != null) {
-              setState(() {
-                singleton.loader = false;
-                Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder:
-                        (context)=>Login()));
-              });
-            } else {
-              if (singleton.messageLogin.isNotEmpty) {
-                if (singleton.messageLogin.contains('uso')) {
-                  setState(() {
-                    singleton.loader = false;
-                  });
-                } else {
-                  showSnackbar(3, 'Inicio de Sesión', singleton.messageLogin, context);
+            if(_selectedRole == "Paciente") {
+              _user = await singleton.registerPatient(email, password, edad, name, gender, telephone, context);
+              if (_user != null) {
+                setState(() {
+                  singleton.loader = false;
+                  Navigator.pushReplacement(context,
+                      MaterialPageRoute(builder:
+                          (context)=>Login()));
+                });
+              } else {
+                if (singleton.messageLogin.isNotEmpty) {
+                  if (singleton.messageLogin.contains('uso')) {
+                    setState(() {
+                      singleton.loader = false;
+                    });
+                  } else {
+                    showSnackbar(3, 'Inicio de Sesión', singleton.messageLogin, context);
+                  }
+                }
+              }
+            } else if(_selectedRole == "Doctor"){
+              _user = await singleton.registerDoctor(email, password, edad, name, gender, telephone, cedula, description, direction, services,  context);
+              if (_user != null) {
+                setState(() {
+                  singleton.loader = false;
+                  Navigator.pushReplacement(context,
+                      MaterialPageRoute(builder:
+                          (context)=>Login()));
+                });
+              } else {
+                if (singleton.messageLogin.isNotEmpty) {
+                  if (singleton.messageLogin.contains('uso')) {
+                    setState(() {
+                      singleton.loader = false;
+                    });
+                  } else {
+                    showSnackbar(3, 'Inicio de Sesión', singleton.messageLogin, context);
+                  }
                 }
               }
             }
@@ -120,25 +162,36 @@ class _SignupState extends State<Signup> {
                               color: Colors.white
                           ),
                         ),
-                        TextFormField(
+                        DropdownButtonFormField<String>(
+                          value: _selectedRole,
+                          items: _roles.map((role) {
+                            return DropdownMenuItem(
+                              value: role,
+                              child: Text(role),
+                            );
+                          }).toList(),
+                          onChanged: (value) {
+                            setState(() {
+                              _selectedRole = value;
+                            });
+                          },
+                          validator: (value) => value == null ? 'Selecciona un rol' : null,
                           style: TextStyle(
                             fontFamily: 'cuerpo',
                             fontSize: 16,
                           ),
-                          obscureText: arrowText,
                           decoration: InputDecoration(
-                            hintText:'Rol',
-                            hintStyle:TextStyle(
-                                fontFamily: 'cuerpo',
-                                fontSize: 16,
-                                color: Color(0x80000000)
-                            ) ,
+                            hintText: 'Rol',
+                            hintStyle: TextStyle(
+                              fontFamily: 'cuerpo',
+                              fontSize: 16,
+                              color: Color(0x80000000)
+                            ),
                             suffixIcon: IconButton(
-                              icon: arrowText?
-                              Icon(Icons.keyboard_arrow_down_outlined,size: 20, color: Color(0xff007EA7)) : Icon(Icons.keyboard_arrow_up_outlined,size:20,color: Color(0xff007EA7)),
+                              icon: arrowText? Icon(Icons.keyboard_arrow_down_outlined, size: 20, color: Color(0xff007EA7)) : Icon(Icons.keyboard_arrow_up_outlined,size:20,color: Color(0xff007EA7)),
                               onPressed: (){
-                                setState((){
-                                  arrowText=arrowText;
+                                setState(() {
+                                  arrowText=!arrowText;
                                 });
                               },
                             ),
@@ -146,8 +199,8 @@ class _SignupState extends State<Signup> {
                               borderRadius: BorderRadius.circular(20),
                               borderSide: BorderSide(
                                 color: Color(0xff007EA7),
-                                width: 2.0, // grosor
-                              ),
+                                width: 2.0,
+                              )
                             ),
                             focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(20),
@@ -162,6 +215,7 @@ class _SignupState extends State<Signup> {
                         ),
                         SizedBox(height: 7),
                         TextFormField(
+                          controller: nameController,
                           style: TextStyle(
                             fontFamily: 'cuerpo',
                             fontSize: 16,
@@ -225,6 +279,7 @@ class _SignupState extends State<Signup> {
                         ),
                         SizedBox(height: 7),
                         TextFormField(
+                          controller: telephoneController,
                           style: TextStyle(
                             fontFamily: 'cuerpo',
                             fontSize: 16,
@@ -256,6 +311,7 @@ class _SignupState extends State<Signup> {
                         ),
                         SizedBox(height: 7),
                         TextFormField(
+                          controller: ageController,
                           style: TextStyle(
                             fontFamily: 'cuerpo',
                             fontSize: 16,
@@ -287,6 +343,7 @@ class _SignupState extends State<Signup> {
                         ),
                         SizedBox(height: 7),
                         TextFormField(
+                          controller: genderController,
                           style: TextStyle(
                             fontFamily: 'cuerpo',
                             fontSize: 16,
@@ -358,6 +415,135 @@ class _SignupState extends State<Signup> {
                             fillColor: Colors.white,
                           ),
                         ),
+                        ..._selectedRole == 'Doctor' ?
+                        [SizedBox(height: 7),
+                        TextFormField(
+                          controller: cedulaController,
+                          style: TextStyle(
+                            fontFamily: 'cuerpo',
+                            fontSize: 16,
+                          ),
+                          decoration: InputDecoration(
+                            hintText:'Cédula',
+                            hintStyle:TextStyle(
+                                fontFamily: 'cuerpo',
+                                fontSize: 16,
+                                color: Color(0x80000000)
+                            ) ,
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20),
+                              borderSide: BorderSide(
+                                color: Color(0xff007EA7),
+                                width: 2.0, // grosor
+                              ),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20),
+                              borderSide: BorderSide(
+                                color: Color(0xff007EA7),
+                                width: 2.0,
+                              ),
+                            ),
+                            filled: true,
+                            fillColor: Colors.white,
+                          ),
+                        ),
+                        SizedBox(height: 7),
+                        TextFormField(
+                          controller: descriptionController,
+                          style: TextStyle(
+                            fontFamily: 'cuerpo',
+                            fontSize: 16,
+                          ),
+                          decoration: InputDecoration(
+                            hintText:'Descripción',
+                            hintStyle:TextStyle(
+                                fontFamily: 'cuerpo',
+                                fontSize: 16,
+                                color: Color(0x80000000)
+                            ) ,
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20),
+                              borderSide: BorderSide(
+                                color: Color(0xff007EA7),
+                                width: 2.0, // grosor
+                              ),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20),
+                              borderSide: BorderSide(
+                                color: Color(0xff007EA7),
+                                width: 2.0,
+                              ),
+                            ),
+                            filled: true,
+                            fillColor: Colors.white,
+                          ),
+                        ),
+                        SizedBox(height: 7),
+                        TextFormField(
+                          controller: directionController,
+                          style: TextStyle(
+                            fontFamily: 'cuerpo',
+                            fontSize: 16,
+                          ),
+                          decoration: InputDecoration(
+                            hintText:'Dirección',
+                            hintStyle:TextStyle(
+                                fontFamily: 'cuerpo',
+                                fontSize: 16,
+                                color: Color(0x80000000)
+                            ) ,
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20),
+                              borderSide: BorderSide(
+                                color: Color(0xff007EA7),
+                                width: 2.0, // grosor
+                              ),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20),
+                              borderSide: BorderSide(
+                                color: Color(0xff007EA7),
+                                width: 2.0,
+                              ),
+                            ),
+                            filled: true,
+                            fillColor: Colors.white,
+                          ),
+                        ),
+                        SizedBox(height: 7),
+                        TextFormField(
+                          controller: servicesController,
+                          style: TextStyle(
+                            fontFamily: 'cuerpo',
+                            fontSize: 16,
+                          ),
+                          decoration: InputDecoration(
+                            hintText:'Servicios',
+                            hintStyle:TextStyle(
+                                fontFamily: 'cuerpo',
+                                fontSize: 16,
+                                color: Color(0x80000000)
+                            ) ,
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20),
+                              borderSide: BorderSide(
+                                color: Color(0xff007EA7),
+                                width: 2.0, // grosor
+                              ),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20),
+                              borderSide: BorderSide(
+                                color: Color(0xff007EA7),
+                                width: 2.0,
+                              ),
+                            ),
+                            filled: true,
+                            fillColor: Colors.white,
+                          ),
+                        ),] : [],
                         SizedBox(height: 15,),
                         ElevatedButton(
                           onPressed: (){

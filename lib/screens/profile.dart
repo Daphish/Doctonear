@@ -125,8 +125,6 @@ class _ProfileState extends State<Profile> {
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: cons.Cerulean,
                                   padding: EdgeInsets.symmetric(horizontal: 20),
-
-
                                 ),
                               ),
                               ElevatedButton(

@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class Singleton {
@@ -64,14 +65,84 @@ class Singleton {
     }
   }
 
-  Future<User?> registerUser(String email, String password, BuildContext context) async {
+  Future<User?> registerPatient(String email, String password, int edad, String name, String gender, int telephone, BuildContext context) async {
     try {
       UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
       print("Usuario registrado exitosamente.");
-      return userCredential.user;
+      User? user = userCredential.user;
+
+      if (user != null) {
+        String uid = user.uid;
+
+        try {
+          await FirebaseFirestore.instance.collection('Pacientes').doc(uid).set({
+            'Edad': edad,
+            'Genero': gender,
+            'Nombre': name,
+            'Telefono': telephone,
+          });
+          print("Paciente registrado en Firestore");
+        } catch (e) {
+          print("Error al registrar paciente en Firestore: $e");
+          messageLogin = 'Error al registrar paciente en Firestore.';
+          return null;
+        }
+
+        print("Paciente registrado en Firestore");
+      }
+      return user;
+
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'email-already-in-use') {
+        print("El correo ya está en uso por otra cuenta.");
+        messageLogin = 'El correo ya está en uso por otra cuenta.';
+        return await signIn(email, password);
+      } else if (e.code == 'weak-password') {
+        print("La contraseña es demasiado débil.");
+      } else {
+        print("Error en el registro: ${e.message}");
+      }
+      return null;
+    }
+  }
+
+  Future<User?> registerDoctor(String email, String password, int edad, String name, String gender, int telephone, String cedula, String description, String direction, String services, BuildContext context) async {
+    try {
+      UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      print("Usuario registrado exitosamente.");
+      User? user = userCredential.user;
+
+      if (user != null) {
+        String uid = user.uid;
+
+        try {
+          await FirebaseFirestore.instance.collection('Doctores').doc(uid).set({
+            'Cedula': cedula,
+            'Descripcion': description,
+            'Direccion': direction,
+            'Edad': edad,
+            'Genero': gender,
+            'Nombre': name,
+            'Servicios': services,
+            'Telefono': telephone,
+          });
+          print("Doctor registrado en Firestore");
+        } catch (e) {
+          print("Error al registrar doctor en Firestore: $e");
+          messageLogin = 'Error al registrar doctor en Firestore.';
+          return null;
+        }
+
+        print("Doctor registrado en Firestore");
+      }
+      return user;
+
     } on FirebaseAuthException catch (e) {
       if (e.code == 'email-already-in-use') {
         print("El correo ya está en uso por otra cuenta.");
