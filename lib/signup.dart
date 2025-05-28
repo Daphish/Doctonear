@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import "package:flutter/material.dart";
 import 'package:medichub/const.dart' as cons;
@@ -17,8 +19,6 @@ class Signup extends StatefulWidget {
 
 class _SignupState extends State<Signup> {
   Singleton singleton = Singleton();
-  bool arrowText=true;
-  bool genderIcon=true;
   User? _user;
 
   final TextEditingController emailController = TextEditingController();
@@ -32,9 +32,14 @@ class _SignupState extends State<Signup> {
   final TextEditingController directionController = TextEditingController();
   final TextEditingController servicesController = TextEditingController();
   final TextEditingController specialtyController = TextEditingController();
+  final TextEditingController officeController = TextEditingController();
+  final TextEditingController costsController = TextEditingController();
 
   String? _selectedRole;
   final List<String> _roles = ['Paciente', 'Doctor'];
+
+  String? _selectedGenre;
+  final List<String> _genres = ['Femenino', 'Masculino','No-binario'];
 
   void register() async {
     setState(() {
@@ -64,6 +69,8 @@ class _SignupState extends State<Signup> {
       String direction = directionController.text.trim();
       String services = servicesController.text.trim();
       String specialty = specialtyController.text.trim();
+      String office=officeController.text.trim();
+      Float32x4 costs=costsController.text.trim() as Float32x4;
 
       singleton.messageLogin = '';
 
@@ -91,7 +98,7 @@ class _SignupState extends State<Signup> {
                 }
               }
             } else if(_selectedRole == "Doctor"){
-              _user = await singleton.registerDoctor(email, password, edad, name, gender, telephone, cedula, description, direction, services, specialty, context);
+              _user = await singleton.registerDoctor(email, password, edad, name, gender, telephone, cedula, description, direction, services, specialty,office,costs, context);
               if (_user != null) {
                 setState(() {
                   singleton.loader = false;
@@ -165,6 +172,8 @@ class _SignupState extends State<Signup> {
                           ),
                         ),
                         DropdownButtonFormField<String>(
+                          iconEnabledColor: cons.Cerulean,
+                          icon: Icon(Icons.keyboard_arrow_down_outlined),
                           value: _selectedRole,
                           items: _roles.map((role) {
                             return DropdownMenuItem(
@@ -188,14 +197,6 @@ class _SignupState extends State<Signup> {
                               fontFamily: 'cuerpo',
                               fontSize: 16,
                               color: Color(0x80000000)
-                            ),
-                            suffixIcon: IconButton(
-                              icon: arrowText? Icon(Icons.keyboard_arrow_down_outlined, size: 20, color: Color(0xff007EA7)) : Icon(Icons.keyboard_arrow_up_outlined,size:20,color: Color(0xff007EA7)),
-                              onPressed: (){
-                                setState(() {
-                                  arrowText=!arrowText;
-                                });
-                              },
                             ),
                             enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(20),
@@ -344,35 +345,39 @@ class _SignupState extends State<Signup> {
                           ),
                         ),
                         SizedBox(height: 7),
-                        TextFormField(
-                          controller: genderController,
+                        DropdownButtonFormField<String>(
+                          iconEnabledColor: cons.Cerulean,
+                          icon: Icon(Icons.keyboard_arrow_down_outlined),
+                          value: _selectedGenre,
+                          items: _genres.map((genre) {
+                            return DropdownMenuItem(
+                              value: genre,
+                              child: Text(genre),
+                            );
+                          }).toList(),
+                          onChanged: (value) {
+                            setState(() {
+                              _selectedGenre = value;
+                            });
+                          },
+                          validator: (value) => value == null ? 'Selecciona un género' : null,
                           style: TextStyle(
                             fontFamily: 'cuerpo',
                             fontSize: 16,
                           ),
-                          obscureText: genderIcon,
                           decoration: InputDecoration(
-                            hintText:'Género',
-                            hintStyle:TextStyle(
+                            hintText: 'Género',
+                            hintStyle: TextStyle(
                                 fontFamily: 'cuerpo',
                                 fontSize: 16,
                                 color: Color(0x80000000)
-                            ) ,
-                            suffixIcon: IconButton(
-                              icon: genderIcon?
-                              Icon(Icons.keyboard_arrow_down_outlined,size: 20, color: Color(0xff007EA7)) : Icon(Icons.keyboard_arrow_up_outlined,size:20,color: Color(0xff007EA7)),
-                              onPressed: (){
-                                setState((){
-                                  genderIcon=!genderIcon;
-                                });
-                              },
                             ),
                             enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(20),
-                              borderSide: BorderSide(
-                                color: Color(0xff007EA7),
-                                width: 2.0, // grosor
-                              ),
+                                borderRadius: BorderRadius.circular(20),
+                                borderSide: BorderSide(
+                                  color: Color(0xff007EA7),
+                                  width: 2.0,
+                                )
                             ),
                             focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(20),
@@ -514,6 +519,38 @@ class _SignupState extends State<Signup> {
                             fillColor: Colors.white,
                           ),
                         ),
+                          SizedBox(height: 7),
+                          TextFormField(
+                            controller: officeController,
+                            style: TextStyle(
+                              fontFamily: 'cuerpo',
+                              fontSize: 16,
+                            ),
+                            decoration: InputDecoration(
+                              hintText:'Consultorio. Ej: "Piso 10, Consultorio 14"',
+                              hintStyle:TextStyle(
+                                  fontFamily: 'cuerpo',
+                                  fontSize: 16,
+                                  color: Color(0x80000000)
+                              ) ,
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(20),
+                                borderSide: BorderSide(
+                                  color: Color(0xff007EA7),
+                                  width: 2.0, // grosor
+                                ),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(20),
+                                borderSide: BorderSide(
+                                  color: Color(0xff007EA7),
+                                  width: 2.0,
+                                ),
+                              ),
+                              filled: true,
+                              fillColor: Colors.white,
+                            ),
+                          ),
                         SizedBox(height: 7),
                         TextFormField(
                           controller: servicesController,
@@ -546,6 +583,38 @@ class _SignupState extends State<Signup> {
                             fillColor: Colors.white,
                           ),
                         ),
+                          SizedBox(height: 7),
+                          TextFormField(
+                            controller: costsController,
+                            style: TextStyle(
+                              fontFamily: 'cuerpo',
+                              fontSize: 16,
+                            ),
+                            decoration: InputDecoration(
+                              hintText:'Costo de la consulta',
+                              hintStyle:TextStyle(
+                                  fontFamily: 'cuerpo',
+                                  fontSize: 16,
+                                  color: Color(0x80000000)
+                              ) ,
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(20),
+                                borderSide: BorderSide(
+                                  color: Color(0xff007EA7),
+                                  width: 2.0, // grosor
+                                ),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(20),
+                                borderSide: BorderSide(
+                                  color: Color(0xff007EA7),
+                                  width: 2.0,
+                                ),
+                              ),
+                              filled: true,
+                              fillColor: Colors.white,
+                            ),
+                          ),
                         TextFormField(
                           controller: specialtyController,
                           style: TextStyle(
