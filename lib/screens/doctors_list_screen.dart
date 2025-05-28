@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:medichub/const.dart' as con;
 import 'package:medichub/screens/profile.dart';
+import 'package:medichub/singleton.dart';
 
 class DoctorsListScreen extends StatefulWidget {
   final String query;
@@ -13,15 +14,10 @@ class DoctorsListScreen extends StatefulWidget {
 }
 
 class _DoctorsListScreenState extends State<DoctorsListScreen> {
-  final List<Map<String, String>> allDoctors = [
-    {'name': 'Dr. Juan Pérez', 'specialty': 'Cardiólogo', 'hospital': 'Hospital Central'},
-    {'name': 'Dra. Ana Torres', 'specialty': 'Dermatóloga', 'hospital': 'Clínica Vida'},
-    {'name': 'Dr. Luis Gómez', 'specialty': 'Pediatra', 'hospital': 'Hospital Infantil'},
-    {'name': 'Dra. Marta Ruiz', 'specialty': 'Ginecóloga', 'hospital': 'Clínica Mujer'},
-  ];
+  Singleton singleton = Singleton();
 
   late TextEditingController searchQuery;
-  List<Map<String, String>> filteredDoctors = [];
+  List<Map<String, dynamic>> filteredDoctors = [];
 
   @override
   void initState() {
@@ -38,9 +34,9 @@ class _DoctorsListScreenState extends State<DoctorsListScreen> {
   void _filterDoctors(String query) {
     final lowerQuery = query.toLowerCase();
     setState(() {
-      filteredDoctors = allDoctors.where((doctor) {
-        return doctor['name']!.toLowerCase().contains(lowerQuery) ||
-            doctor['specialty']!.toLowerCase().contains(lowerQuery);
+      filteredDoctors = singleton.doctors.where((doctor) {
+        return (doctor['Nombre'] ?? '').toString().toLowerCase().contains(lowerQuery) ||
+            (doctor['Especialidad'] ?? '').toString().toLowerCase().contains(lowerQuery);
       }).toList();
     });
   }
@@ -162,7 +158,7 @@ class _DoctorsListScreenState extends State<DoctorsListScreen> {
                                           widget.iconPress();
                                         },
                                         child: Text(
-                                          doctor['name'] ?? '',
+                                          doctor['Nombre'] ?? '',
                                           style: const TextStyle(
                                             fontFamily: 'butLog',
                                             fontSize: 16,
@@ -170,7 +166,7 @@ class _DoctorsListScreenState extends State<DoctorsListScreen> {
                                         ),
                                       ),
                                       Text(
-                                        doctor['specialty'] ?? '',
+                                        doctor['Especialidad'] ?? '',
                                         style: const TextStyle(
                                           fontFamily: 'cuerpo',
                                           fontSize: 14,
@@ -178,7 +174,7 @@ class _DoctorsListScreenState extends State<DoctorsListScreen> {
                                         ),
                                       ),
                                       Text(
-                                        '315 opiniones',
+                                        '${doctor['comentarios'].length} opiniones',
                                         style:TextStyle(
                                             fontFamily: 'cuerpo',
                                             fontSize: 14,
@@ -204,7 +200,7 @@ class _DoctorsListScreenState extends State<DoctorsListScreen> {
                                                   Image.asset('assets/images/gps.png', width: 20,),
                                                   SizedBox(width: 5,),
                                                   Text(
-                                                    'Av Himno Nacional 815,Las Águilas 3ra Sección,78134',
+                                                    doctor['Direccion'] ?? 'Av Himno Nacional 815,Las Águilas 3ra Sección,78134',
                                                     style: TextStyle(
                                                         color: Colors.black,
                                                         fontSize: 14
@@ -217,7 +213,7 @@ class _DoctorsListScreenState extends State<DoctorsListScreen> {
                                                 children: [
                                                   SizedBox(width: 20,),
                                                   Text(
-                                                    'Clínica de Maternidad, Consultorio 14',
+                                                    'Consultorio: ${doctor['Consultorio']}',
                                                     style: TextStyle(
                                                         color: con.placeholder,
                                                         fontSize: 13
@@ -230,7 +226,7 @@ class _DoctorsListScreenState extends State<DoctorsListScreen> {
                                                   Image.asset('assets/images/cash.png', width: 20,),
                                                   SizedBox(width: 5,),
                                                   Text(
-                                                    'Primera consulta:',
+                                                     'Primera consulta:',
                                                     style: TextStyle(
                                                         color: Colors.black,
                                                         fontSize: 14
@@ -238,26 +234,13 @@ class _DoctorsListScreenState extends State<DoctorsListScreen> {
                                                   ),
                                                   SizedBox(width: 10,),
                                                   Text(
-                                                    '1000',
+                                                    doctor['Costo'] != null ? '\$${doctor['Costo']}' : 'No especificado',
                                                     style: TextStyle(
-                                                        color: Colors.black,
-                                                        fontSize: 15,
-                                                        fontFamily: 'butLog'
+                                                      color: Colors.black,
+                                                      fontSize: 15,
+                                                      fontFamily: 'butLog',
                                                     ),
                                                   ),
-                                                ],
-                                              ),
-                                              Row(
-                                                children: [
-                                                  Image.asset('assets/images/calendar_blue.png', width: 20,),
-                                                  SizedBox(width: 5,),
-                                                  Text(
-                                                    'Próxima fecha disponible: 9 de abril de 2025',
-                                                    style: TextStyle(
-                                                        color: Colors.black,
-                                                        fontSize: 14
-                                                    ),
-                                                  )
                                                 ],
                                               ),
                                             ],
