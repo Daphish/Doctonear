@@ -16,6 +16,7 @@ class Singleton {
   String uidGmail = '';
   bool loader = false;
   String messageLogin = '';
+  List<Map<String, dynamic>>doctors = [];
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
@@ -109,7 +110,7 @@ class Singleton {
     }
   }
 
-  Future<User?> registerDoctor(String email, String password, int edad, String name, String gender, int telephone, String cedula, String description, String direction, String services, BuildContext context) async {
+  Future<User?> registerDoctor(String email, String password, int edad, String name, String gender, int telephone, String cedula, String description, String direction, String services, String specialty, BuildContext context) async {
     try {
       UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: email,
@@ -127,6 +128,7 @@ class Singleton {
             'Descripcion': description,
             'Direccion': direction,
             'Edad': edad,
+            'Especialidad': specialty,
             'Genero': gender,
             'Nombre': name,
             'Servicios': services,
@@ -155,6 +157,30 @@ class Singleton {
       }
       return null;
     }
+  }
+
+  Future<void> getDoctors() async {
+    try {
+      CollectionReference doctores = FirebaseFirestore.instance.collection('Doctores');
+      QuerySnapshot querySnapshot = await doctores.get();
+      List<Map<String, dynamic>>sessionDoctors = [];
+
+      for (var doc in querySnapshot.docs) {
+        var doctor = doc.data() as Map<String, dynamic>;
+        doctor['id'] = doc.id;
+        QuerySnapshot comentariosSnapshot = await doctores.doc(doc.id).collection('Comentarios').get();
+        List<Map<String, dynamic>> comentarios = comentariosSnapshot.docs
+            .map((comentarioDoc) => comentarioDoc.data() as Map<String, dynamic>)
+            .toList();
+
+        doctor['comentarios'] = comentarios;
+        sessionDoctors.add(doctor);
+      }
+      doctors = sessionDoctors;
+    } catch (e) {
+      print('Error al obtener los doctores : $e');
+    }
+    print(doctors);
   }
 
   // Método para cerrar sesión

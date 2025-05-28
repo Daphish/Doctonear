@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:medichub/const.dart' as cons;
+import 'package:medichub/singleton.dart';
 
 class HomeScreen extends StatefulWidget {
   final Function(String) onSearchPressed;
@@ -11,119 +12,169 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  bool arrowText=true;
+  bool arrowText = true;
+  bool isLoading = false;
   final TextEditingController _controller = TextEditingController();
+  final Singleton singleton = Singleton();
+
+  @override
+  void initState() {
+    super.initState();
+    _loadDoctorsInBackground();
+  }
+
+  // Cargar doctores en segundo plano para que estén listos
+  Future<void> _loadDoctorsInBackground() async {
+    if (singleton.doctors.isEmpty) {
+      await singleton.getDoctors();
+    }
+  }
+
+  Future<void> _handleSearch() async {
+    setState(() {
+      isLoading = true;
+    });
+
+    try {
+      // Asegurar que los doctores estén cargados antes de buscar
+      if (singleton.doctors.isEmpty) {
+        await singleton.getDoctors();
+      }
+
+      widget.onSearchPressed(_controller.text);
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error al cargar doctores: $e'))
+      );
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: SafeArea(
-            child: Container(
+      body: SafeArea(
+        child: Container(
             decoration: BoxDecoration(
-            gradient: LinearGradient(
-            begin: Alignment.bottomCenter,
-            end: Alignment.topCenter,
-            colors: [
-              Color(0xffFFFFFF),
-              cons.Cerulean
-            ]
-            )
+                gradient: LinearGradient(
+                    begin: Alignment.bottomCenter,
+                    end: Alignment.topCenter,
+                    colors: [
+                      Color(0xffFFFFFF),
+                      cons.Cerulean
+                    ]
+                )
             ),
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.all(20),
-            child: Center(
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: EdgeInsets.all(20),
+                child: Center(
+                  child: Column(
                     children: [
-                      Image.asset('assets/images/icono.png', height:40, width: 40, fit: BoxFit.contain,),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.asset('assets/images/icono.png', height: 40, width: 40, fit: BoxFit.contain,),
+                          Text(
+                            'Doctonear',
+                            style: TextStyle(
+                                fontFamily: 'titulo',
+                                fontSize: 40,
+                                color: Colors.white
+                            ),
+                          ),
+                        ],
+                      ),
+                      Image.asset('assets/images/doctor_image.png', height: 350, fit: BoxFit.contain,),
+                      SizedBox(height: 20,),
                       Text(
-                        'Doctonear',
+                        'Encuentra el doctor más confiable y cercano',
                         style: TextStyle(
-                            fontFamily: 'titulo',
-                            fontSize: 40,
-                            color: Colors.white
+                          fontFamily: 'titulo',
+                          fontSize: 30,
+                          color: Colors.white,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      SizedBox(height: 20,),
+                      TextFormField(
+                        controller: _controller,
+                        enabled: !isLoading,
+                        style: TextStyle(
+                          fontFamily: 'cuerpo',
+                          fontSize: 16,
+                        ),
+                        decoration: InputDecoration(
+                          hintText: 'Especialidad o nombre',
+                          hintStyle: TextStyle(
+                              fontFamily: 'cuerpo',
+                              fontSize: 16,
+                              color: Color(0x80000000)
+                          ),
+                          suffixIcon: IconButton(
+                            icon: arrowText ?
+                            Icon(Icons.keyboard_arrow_down_outlined, size: 20, color: Color(0xff007EA7)) :
+                            Icon(Icons.keyboard_arrow_up_outlined, size: 20, color: Color(0xff007EA7)),
+                            onPressed: () {
+                              setState(() {
+                                arrowText = !arrowText;
+                              });
+                            },
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(20),
+                            borderSide: BorderSide(
+                              color: Color(0xff007EA7),
+                              width: 2.0,
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(20),
+                            borderSide: BorderSide(
+                              color: Color(0xff007EA7),
+                              width: 2.0,
+                            ),
+                          ),
+                          filled: true,
+                          fillColor: Colors.white,
+                        ),
+                      ),
+                      SizedBox(height: 30,),
+                      ElevatedButton(
+                        onPressed: isLoading ? null : _handleSearch,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: cons.Prussian_Blue,
+                          padding: EdgeInsets.symmetric(horizontal: 100, vertical: 12),
+                          elevation: 5,
+                        ),
+                        child: isLoading
+                            ? SizedBox(
+                          height: 20,
+                          width: 20,
+                          child: CircularProgressIndicator(
+                            color: Colors.white,
+                            strokeWidth: 2,
+                          ),
+                        )
+                            : Text(
+                          'Buscar',
+                          style: TextStyle(
+                              fontFamily: 'butLOg',
+                              fontSize: 22,
+                              color: Colors.white
+                          ),
                         ),
                       ),
                     ],
                   ),
-                  Image.asset('assets/images/doctor_image.png', height: 350, fit: BoxFit.contain,),
-                  SizedBox(height: 20,),
-                  Text(
-                    'Encuentra el doctor más confiable y cercano',
-                    style: TextStyle(
-                      fontFamily: 'titulo',
-                      fontSize: 30,
-                      color: Colors.white,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                  SizedBox(height: 20,),
-                  TextFormField(
-                    controller: _controller,
-                    style: TextStyle(
-                      fontFamily: 'cuerpo',
-                      fontSize: 16,
-                    ),
-                    decoration: InputDecoration(
-                      hintText:'Escpecialidad o nombre',
-                      hintStyle:TextStyle(
-                          fontFamily: 'cuerpo',
-                          fontSize: 16,
-                          color: Color(0x80000000)
-                      ) ,
-                      suffixIcon: IconButton(
-                        icon: arrowText?
-                        Icon(Icons.keyboard_arrow_down_outlined,size: 20, color: Color(0xff007EA7)) : Icon(Icons.keyboard_arrow_up_outlined,size:20,color: Color(0xff007EA7)),
-                        onPressed: (){
-                          setState((){
-                            arrowText=arrowText;
-                          });
-                        },
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(20),
-                        borderSide: BorderSide(
-                          color: Color(0xff007EA7),
-                          width: 2.0, // grosor
-                        ),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(20),
-                        borderSide: BorderSide(
-                          color: Color(0xff007EA7),
-                          width: 2.0,
-                        ),
-                      ),
-                      filled: true,
-                      fillColor: Colors.white,
-                    ),
-                  ),
-                  SizedBox(height: 30,),
-                  ElevatedButton(
-                    onPressed: () {widget.onSearchPressed(_controller.text);},
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: cons.Prussian_Blue,
-                      padding: EdgeInsets.symmetric(horizontal: 100,vertical: 12),
-                      elevation: 5,
-                    ),
-                    child: Text(
-                      'Buscar',
-                      style: TextStyle(
-                          fontFamily: 'butLOg',
-                          fontSize: 22,
-                          color: Colors.white
-                      ),
-                    ),
-                  ),
-                ],
+                ),
               ),
-            ),
-          ),
-        )
+            )
         ),
-        ),
+      ),
     );
   }
 }

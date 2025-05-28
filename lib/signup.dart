@@ -31,6 +31,7 @@ class _SignupState extends State<Signup> {
   final TextEditingController descriptionController = TextEditingController();
   final TextEditingController directionController = TextEditingController();
   final TextEditingController servicesController = TextEditingController();
+  final TextEditingController specialtyController = TextEditingController();
 
   String? _selectedRole;
   final List<String> _roles = ['Paciente', 'Doctor'];
@@ -62,6 +63,7 @@ class _SignupState extends State<Signup> {
       String description = descriptionController.text.trim();
       String direction = directionController.text.trim();
       String services = servicesController.text.trim();
+      String specialty = specialtyController.text.trim();
 
       singleton.messageLogin = '';
 
@@ -89,7 +91,7 @@ class _SignupState extends State<Signup> {
                 }
               }
             } else if(_selectedRole == "Doctor"){
-              _user = await singleton.registerDoctor(email, password, edad, name, gender, telephone, cedula, description, direction, services,  context);
+              _user = await singleton.registerDoctor(email, password, edad, name, gender, telephone, cedula, description, direction, services, specialty, context);
               if (_user != null) {
                 setState(() {
                   singleton.loader = false;
@@ -543,24 +545,63 @@ class _SignupState extends State<Signup> {
                             filled: true,
                             fillColor: Colors.white,
                           ),
+                        ),
+                        TextFormField(
+                          controller: specialtyController,
+                          style: TextStyle(
+                            fontFamily: 'cuerpo',
+                            fontSize: 16,
+                          ),
+                          decoration: InputDecoration(
+                            hintText:'Especialidad',
+                            hintStyle:TextStyle(
+                                fontFamily: 'cuerpo',
+                                fontSize: 16,
+                                color: Color(0x80000000)
+                            ) ,
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20),
+                              borderSide: BorderSide(
+                                color: Color(0xff007EA7),
+                                width: 2.0, // grosor
+                              ),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20),
+                              borderSide: BorderSide(
+                                color: Color(0xff007EA7),
+                                width: 2.0,
+                              ),
+                            ),
+                            filled: true,
+                            fillColor: Colors.white,
+                          ),
                         ),] : [],
                         SizedBox(height: 15,),
                         ElevatedButton(
                           onPressed: (){
                             register();
                           },
-                          child: Text(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: cons.Prussian_Blue,
+                            padding: EdgeInsets.symmetric(horizontal: 105,vertical: 12),
+                            elevation: 5,
+                          ),
+                          child: singleton.loader ? SizedBox(
+                            height: 20,
+                            width: 20,
+                            child: CircularProgressIndicator(
+                              color: Colors.white,
+                              strokeWidth: 2,
+                            ),
+                          ) :
+                          Text(
                             'Registrarme',
                             style: TextStyle(
                                 fontFamily: 'butLOg',
                                 fontSize: 22,
                                 color: Colors.white
                             ),
-                          ),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: cons.Prussian_Blue,
-                            padding: EdgeInsets.symmetric(horizontal: 105,vertical: 12),
-                            elevation: 5,
                           ),
                         ),
                         SizedBox(height: 30,),

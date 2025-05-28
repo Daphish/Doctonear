@@ -199,7 +199,15 @@ class _LoginState extends State<Login> {
                         padding: EdgeInsets.symmetric(horizontal: 100,vertical: 12),
                         elevation: 5,
                       ),
-                      child: Text(
+                      child: singleton.loader ? SizedBox(
+                        height: 20,
+                        width: 20,
+                        child: CircularProgressIndicator(
+                          color: Colors.white,
+                          strokeWidth: 2,
+                        ),
+                      ) :
+                      Text(
                         'Iniciar sesión',
                         style: TextStyle(
                             fontFamily: 'butLOg',
