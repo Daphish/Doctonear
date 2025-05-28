@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:medichub/const.dart' as con;
+import 'package:medichub/singleton.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -9,6 +10,8 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  Singleton singleton = Singleton();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -71,7 +74,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                        mainAxisAlignment: MainAxisAlignment.center,
                        children: [
                          Text(
-                           'Alberto Lopez',
+                           singleton.userData['Nombre'],
                            style: TextStyle(
                                fontFamily: 'bold',
                                fontSize: 30
@@ -84,110 +87,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                            highlightColor: Colors.transparent,
                          )
                        ],
-                     ),
-                     //correo
-                     Divider(
-                       color: con.Cerulean,
-                     ),
-                     Padding(
-                       padding: EdgeInsets.only(left: 10,right: 10),
-                       child: Row(
-                         children: [
-                           Expanded(
-                               flex:5,
-                               child: Row(
-                                 children: [
-                                   Column(
-                                     crossAxisAlignment: CrossAxisAlignment.start,
-                                     children: [
-                                       Text(
-                                         'Correo electrónico',
-                                         style: TextStyle(
-                                             fontSize: 18,
-                                             fontFamily: 'bold',
-                                             color: con.Cerulean
-                                         ),
-                                       ),
-                                       Text(
-                                         'alberto.lopez@gmail.com',
-                                         style: TextStyle(
-                                             fontSize: 16,
-                                             fontFamily: 'bold',
-                                             color: Colors.black
-                                         ),
-                                       ),
-                                     ],
-                                   ),
-                                 ],
-                               )
-                           ),
-                           Expanded(
-                               flex: 1,
-                               child:Column(
-                                 children: [
-                                   IconButton(
-                                     onPressed: (){},
-                                     icon: Icon(Icons.edit,color: con.Prussian_Blue,size: 30,),
-                                     hoverColor: Colors.transparent,
-                                     highlightColor: Colors.transparent,
-                                   )
-                                 ],
-                               )
-                           )
-                         ],
-                       ),
-                     ),
-                     //contraseña
-                     Divider(
-                       color: con.Cerulean,
-                     ),
-                     Padding(
-                       padding: EdgeInsets.only(left: 10,right: 10),
-                       child: Row(
-                         children: [
-                           Expanded(
-                               flex:5,
-                               child: Row(
-                                 children: [
-                                   Column(
-                                     crossAxisAlignment: CrossAxisAlignment.start,
-                                     children: [
-                                       Text(
-                                         'Contraseña',
-                                         style: TextStyle(
-                                             fontSize: 18,
-                                             fontFamily: 'bold',
-                                             color: con.Cerulean
-                                         ),
-                                       ),
-                                       Text(
-                                         'alberto123',
-                                         style: TextStyle(
-                                             fontSize: 16,
-                                             fontFamily: 'bold',
-                                             color: Colors.black
-                                         ),
-                                       ),
-                                     ],
-                                   ),
-                                 ],
-                               )
-                           ),
-                           Expanded(
-                               flex: 1,
-                               child:Column(
-                                 children: [
-                                   IconButton(
-                                     onPressed: (){},
-                                     icon: Icon(Icons.edit,color: con.Prussian_Blue,size: 30,),
-                                     hoverColor: Colors.transparent,
-                                     highlightColor: Colors.transparent,
-                                   )
-                                 ],
-                               )
-                           )
-                         ],
-                       ),
                      ),
                      //edad
                      Divider(
@@ -213,7 +112,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                          ),
                                        ),
                                        Text(
-                                         '22',
+                                         singleton.userData['Edad'].toString(),
                                          style: TextStyle(
                                              fontSize: 16,
                                              fontFamily: 'bold',
@@ -265,7 +164,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                          ),
                                        ),
                                        Text(
-                                         'Masculino',
+                                         singleton.userData['Genero'],
                                          style: TextStyle(
                                              fontSize: 16,
                                              fontFamily: 'bold',
@@ -309,7 +208,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                      crossAxisAlignment: CrossAxisAlignment.start,
                                      children: [
                                        Text(
-                                         'Correo electrónico',
+                                         'Teléfono',
                                          style: TextStyle(
                                              fontSize: 18,
                                              fontFamily: 'bold',
@@ -317,7 +216,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                          ),
                                        ),
                                        Text(
-                                         'alberto.lopez@gmail.com',
+                                         singleton.userData['Telefono'].toString(),
                                          style: TextStyle(
                                              fontSize: 16,
                                              fontFamily: 'bold',
@@ -345,7 +244,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                          ],
                        ),
                      ),
-                     ///rol
                      Divider(
                        color: con.Cerulean,
                      ),
@@ -369,7 +267,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                          ),
                                        ),
                                        Text(
-                                         'Médico',
+                                         singleton.userData['Rol'],
                                          style: TextStyle(
                                              fontSize: 16,
                                              fontFamily: 'bold',
@@ -384,7 +282,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                          ],
                        ),
                      ),
-                     ///medico---> cedula
+                     ...singleton.userData['Rol'] == 'Doctor' ? [
                      Divider(
                        color: con.Cerulean,
                      ),
@@ -408,7 +306,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                          ),
                                        ),
                                        Text(
-                                         '51594584156156',
+                                         singleton.userData['Cedula'],
                                          style: TextStyle(
                                              fontSize: 16,
                                              fontFamily: 'bold',
@@ -439,9 +337,310 @@ class _ProfileScreenState extends State<ProfileScreen> {
                      Divider(
                        color: con.Cerulean,
                      ),
-
-
-
+                       Padding(
+                         padding: EdgeInsets.only(left: 10,right: 10),
+                         child: Row(
+                           children: [
+                             Expanded(
+                                 flex:5,
+                                 child: Row(
+                                   children: [
+                                     Column(
+                                       crossAxisAlignment: CrossAxisAlignment.start,
+                                       children: [
+                                         Text(
+                                           'Consultorio',
+                                           style: TextStyle(
+                                               fontSize: 18,
+                                               fontFamily: 'bold',
+                                               color: con.Cerulean
+                                           ),
+                                         ),
+                                         Text(
+                                           singleton.userData['Consultorio'],
+                                           style: TextStyle(
+                                               fontSize: 16,
+                                               fontFamily: 'bold',
+                                               color: Colors.black
+                                           ),
+                                         ),
+                                       ],
+                                     ),
+                                   ],
+                                 )
+                             ),
+                             Expanded(
+                                 flex: 1,
+                                 child:Column(
+                                   children: [
+                                     IconButton(
+                                       onPressed: (){},
+                                       icon: Icon(Icons.edit,color: con.Prussian_Blue,size: 30,),
+                                       hoverColor: Colors.transparent,
+                                       highlightColor: Colors.transparent,
+                                     )
+                                   ],
+                                 )
+                             )
+                           ],
+                         ),
+                       ),
+                       Divider(
+                         color: con.Cerulean,
+                       ),
+                       Padding(
+                         padding: EdgeInsets.only(left: 10,right: 10),
+                         child: Row(
+                           children: [
+                             Expanded(
+                                 flex:5,
+                                 child: Row(
+                                   children: [
+                                     Column(
+                                       crossAxisAlignment: CrossAxisAlignment.start,
+                                       children: [
+                                         Text(
+                                           'Costo de consulta',
+                                           style: TextStyle(
+                                               fontSize: 18,
+                                               fontFamily: 'bold',
+                                               color: con.Cerulean
+                                           ),
+                                         ),
+                                         Text(
+                                           singleton.userData['Costo'].toString(),
+                                           style: TextStyle(
+                                               fontSize: 16,
+                                               fontFamily: 'bold',
+                                               color: Colors.black
+                                           ),
+                                         ),
+                                       ],
+                                     ),
+                                   ],
+                                 )
+                             ),
+                             Expanded(
+                                 flex: 1,
+                                 child:Column(
+                                   children: [
+                                     IconButton(
+                                       onPressed: (){},
+                                       icon: Icon(Icons.edit,color: con.Prussian_Blue,size: 30,),
+                                       hoverColor: Colors.transparent,
+                                       highlightColor: Colors.transparent,
+                                     )
+                                   ],
+                                 )
+                             )
+                           ],
+                         ),
+                       ),
+                       Divider(
+                         color: con.Cerulean,
+                       ),
+                       Padding(
+                         padding: EdgeInsets.only(left: 10,right: 10),
+                         child: Row(
+                           children: [
+                             Expanded(
+                                 flex:5,
+                                 child: Row(
+                                   children: [
+                                     Column(
+                                       crossAxisAlignment: CrossAxisAlignment.start,
+                                       children: [
+                                         Text(
+                                           'Descripción',
+                                           style: TextStyle(
+                                               fontSize: 18,
+                                               fontFamily: 'bold',
+                                               color: con.Cerulean
+                                           ),
+                                         ),
+                                         Text(
+                                           singleton.userData['Descripcion'],
+                                           style: TextStyle(
+                                               fontSize: 16,
+                                               fontFamily: 'bold',
+                                               color: Colors.black
+                                           ),
+                                         ),
+                                       ],
+                                     ),
+                                   ],
+                                 )
+                             ),
+                             Expanded(
+                                 flex: 1,
+                                 child:Column(
+                                   children: [
+                                     IconButton(
+                                       onPressed: (){},
+                                       icon: Icon(Icons.edit,color: con.Prussian_Blue,size: 30,),
+                                       hoverColor: Colors.transparent,
+                                       highlightColor: Colors.transparent,
+                                     )
+                                   ],
+                                 )
+                             )
+                           ],
+                         ),
+                       ),
+                       Divider(
+                         color: con.Cerulean,
+                       ),
+                       Padding(
+                         padding: EdgeInsets.only(left: 10,right: 10),
+                         child: Row(
+                           children: [
+                             Expanded(
+                                 flex:5,
+                                 child: Row(
+                                   children: [
+                                     Column(
+                                       crossAxisAlignment: CrossAxisAlignment.start,
+                                       children: [
+                                         Text(
+                                           'Dirección',
+                                           style: TextStyle(
+                                               fontSize: 18,
+                                               fontFamily: 'bold',
+                                               color: con.Cerulean
+                                           ),
+                                         ),
+                                         Text(
+                                           singleton.userData['Direccion'],
+                                           style: TextStyle(
+                                               fontSize: 16,
+                                               fontFamily: 'bold',
+                                               color: Colors.black
+                                           ),
+                                         ),
+                                       ],
+                                     ),
+                                   ],
+                                 )
+                             ),
+                             Expanded(
+                                 flex: 1,
+                                 child:Column(
+                                   children: [
+                                     IconButton(
+                                       onPressed: (){},
+                                       icon: Icon(Icons.edit,color: con.Prussian_Blue,size: 30,),
+                                       hoverColor: Colors.transparent,
+                                       highlightColor: Colors.transparent,
+                                     )
+                                   ],
+                                 )
+                             )
+                           ],
+                         ),
+                       ),
+                       Divider(
+                         color: con.Cerulean,
+                       ),
+                       Padding(
+                         padding: EdgeInsets.only(left: 10,right: 10),
+                         child: Row(
+                           children: [
+                             Expanded(
+                                 flex:5,
+                                 child: Row(
+                                   children: [
+                                     Column(
+                                       crossAxisAlignment: CrossAxisAlignment.start,
+                                       children: [
+                                         Text(
+                                           'Especialidad',
+                                           style: TextStyle(
+                                               fontSize: 18,
+                                               fontFamily: 'bold',
+                                               color: con.Cerulean
+                                           ),
+                                         ),
+                                         Text(
+                                           singleton.userData['Especialidad'],
+                                           style: TextStyle(
+                                               fontSize: 16,
+                                               fontFamily: 'bold',
+                                               color: Colors.black
+                                           ),
+                                         ),
+                                       ],
+                                     ),
+                                   ],
+                                 )
+                             ),
+                             Expanded(
+                                 flex: 1,
+                                 child:Column(
+                                   children: [
+                                     IconButton(
+                                       onPressed: (){},
+                                       icon: Icon(Icons.edit,color: con.Prussian_Blue,size: 30,),
+                                       hoverColor: Colors.transparent,
+                                       highlightColor: Colors.transparent,
+                                     )
+                                   ],
+                                 )
+                             )
+                           ],
+                         ),
+                       ),
+                       Divider(
+                         color: con.Cerulean,
+                       ),
+                       Padding(
+                         padding: EdgeInsets.only(left: 10,right: 10),
+                         child: Row(
+                           children: [
+                             Expanded(
+                                 flex:5,
+                                 child: Row(
+                                   children: [
+                                     Column(
+                                       crossAxisAlignment: CrossAxisAlignment.start,
+                                       children: [
+                                         Text(
+                                           'Servicios',
+                                           style: TextStyle(
+                                               fontSize: 18,
+                                               fontFamily: 'bold',
+                                               color: con.Cerulean
+                                           ),
+                                         ),
+                                         Text(
+                                           singleton.userData['Servicios'],
+                                           style: TextStyle(
+                                               fontSize: 16,
+                                               fontFamily: 'bold',
+                                               color: Colors.black
+                                           ),
+                                         ),
+                                       ],
+                                     ),
+                                   ],
+                                 )
+                             ),
+                             Expanded(
+                                 flex: 1,
+                                 child:Column(
+                                   children: [
+                                     IconButton(
+                                       onPressed: (){},
+                                       icon: Icon(Icons.edit,color: con.Prussian_Blue,size: 30,),
+                                       hoverColor: Colors.transparent,
+                                       highlightColor: Colors.transparent,
+                                     )
+                                   ],
+                                 )
+                             )
+                           ],
+                         ),
+                       ),
+                     ] : []
                    ],
                  ),
                )
