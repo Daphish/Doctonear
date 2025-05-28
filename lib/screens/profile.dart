@@ -5,7 +5,9 @@ import 'package:medichub/screens/home_screen.dart';
 
 class Profile extends StatefulWidget {
   final void Function() backPress;
-  const Profile({super.key, required this.backPress});
+  final Map<String, dynamic> doctor;
+
+  const Profile({super.key, required this.backPress, required this.doctor});
 
   @override
   State<Profile> createState() => _ProfileState();
@@ -85,7 +87,7 @@ class _ProfileState extends State<Profile> {
                           ),
                           SizedBox(width: 8),
                           Text(
-                            'Dra. Giovana Rodríguez',
+                            widget.doctor['Nombre'],
                             style: TextStyle(
                               fontFamily: 'bold',
                               fontSize: 24,
@@ -94,7 +96,7 @@ class _ProfileState extends State<Profile> {
                           ),
                           SizedBox(width: 8),
                           Text(
-                            'Ginecólogo',
+                            widget.doctor['Especialidad'],
                             style: TextStyle(
                               fontFamily: 'butLog',
                               fontSize: 20,
@@ -107,6 +109,10 @@ class _ProfileState extends State<Profile> {
                             children: [
                               ElevatedButton(
                                 onPressed: (){},
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: cons.Cerulean,
+                                  padding: EdgeInsets.symmetric(horizontal: 20),
+                                ),
                                 child: Row(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
@@ -122,13 +128,13 @@ class _ProfileState extends State<Profile> {
                                     )
                                   ],
                                 ),
+                              ),
+                              ElevatedButton(
+                                onPressed: (){},
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: cons.Cerulean,
                                   padding: EdgeInsets.symmetric(horizontal: 20),
                                 ),
-                              ),
-                              ElevatedButton(
-                                onPressed: (){},
                                 child: Row(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
@@ -143,12 +149,6 @@ class _ProfileState extends State<Profile> {
                                       ),
                                     )
                                   ],
-                                ),
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: cons.Cerulean,
-                                  padding: EdgeInsets.symmetric(horizontal: 20),
-
-
                                 ),
                               ),
                             ],
@@ -171,7 +171,7 @@ class _ProfileState extends State<Profile> {
                             children: [
                               Expanded(
                                 child: Text(
-                                  'Soy la Dra. Guayaba Rodríguez  -Egresada de la Universidad Autónoma de San Luis Potosí. -Especialidad de Ginecologia y Obstetricia por parte de la UASLP...',
+                                  widget.doctor['Descripcion'],
                                   style: TextStyle(
                                       fontSize: 14,
                                       fontFamily: 'cuerpo'
@@ -197,7 +197,7 @@ class _ProfileState extends State<Profile> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'CONTROL PRENATAL ATENCION DE PARTO VAGINAL ATENCION DE PARTO PORCESAREA CIRUGIA LAPAROSCOPICA GINECOLOGICA',
+                                widget.doctor['Servicios'],
                                 style: TextStyle(
                                     fontSize: 14,
                                     fontFamily: 'cuerpo'
@@ -225,7 +225,7 @@ class _ProfileState extends State<Profile> {
                             children: [
                               Expanded(
                                 child:Text(
-                                  'Av Himno Nacional 815,Las Águilas 3ra Sección 78134',
+                                  widget.doctor['Direccion'],
                                   style: TextStyle(
                                       fontSize: 14,
                                       fontFamily: 'cuerpo'

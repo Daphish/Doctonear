@@ -5,7 +5,7 @@ import 'package:medichub/singleton.dart';
 
 class DoctorsListScreen extends StatefulWidget {
   final String query;
-  final void Function() iconPress;
+  final Function(Map<String, dynamic>) iconPress;
 
   const DoctorsListScreen({super.key, required this.query, required this.iconPress});
 
@@ -138,155 +138,126 @@ class _DoctorsListScreenState extends State<DoctorsListScreen> {
                           ),
                           child: Column(
                             children: [
-                              Row(
-                                children: [
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.circular(100),
-                                    child: Image.asset(
-                                      "assets/images/doctor_avatar.jpg",
-                                      height: 75,
-                                      width: 75,
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
-                                  const SizedBox(width: 12),
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      GestureDetector(
-                                        onTap: (){
-                                          widget.iconPress();
-                                        },
-                                        child: Text(
-                                          doctor['Nombre'] ?? '',
-                                          style: const TextStyle(
-                                            fontFamily: 'butLog',
-                                            fontSize: 16,
-                                          ),
-                                        ),
-                                      ),
-                                      Text(
-                                        doctor['Especialidad'] ?? '',
-                                        style: const TextStyle(
-                                          fontFamily: 'cuerpo',
-                                          fontSize: 14,
-                                          color: Colors.black,
-                                        ),
-                                      ),
-                                      Text(
-                                        '${doctor['comentarios'].length} opiniones',
-                                        style:TextStyle(
-                                            fontFamily: 'cuerpo',
-                                            fontSize: 14,
-                                            color: con.placeholder
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                              Row(
-                                children: [
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Row(
-                                        children: [
-                                          Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: [
-                                              Row(
-                                                children: [
-                                                  Image.asset('assets/images/gps.png', width: 20,),
-                                                  SizedBox(width: 5,),
-                                                  Text(
-                                                    doctor['Direccion'] ?? 'Av Himno Nacional 815,Las Águilas 3ra Sección,78134',
-                                                    style: TextStyle(
-                                                        color: Colors.black,
-                                                        fontSize: 14
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                              SizedBox(height: 3,),
-                                              Row(
-                                                children: [
-                                                  SizedBox(width: 20,),
-                                                  Text(
-                                                    'Consultorio: ${doctor['Consultorio']}',
-                                                    style: TextStyle(
-                                                        color: con.placeholder,
-                                                        fontSize: 13
-                                                    ),
-                                                  )
-                                                ],
-                                              ),
-                                              Row(
-                                                children: [
-                                                  Image.asset('assets/images/cash.png', width: 20,),
-                                                  SizedBox(width: 5,),
-                                                  Text(
-                                                     'Primera consulta:',
-                                                    style: TextStyle(
-                                                        color: Colors.black,
-                                                        fontSize: 14
-                                                    ),
-                                                  ),
-                                                  SizedBox(width: 10,),
-                                                  Text(
-                                                    doctor['Costo'] != null ? '\$${doctor['Costo']}' : 'No especificado',
-                                                    style: TextStyle(
-                                                      color: Colors.black,
-                                                      fontSize: 15,
-                                                      fontFamily: 'butLog',
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ],
-                                          )
-                                        ],
-                                      )
-                                    ],
-                                  ),
-
-                                ],
-                              ),
-                              SizedBox(height: 10,),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  ElevatedButton(
-                                    onPressed: (){},
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.min,
+                              InkWell(
+                                onTap: () {
+                                  widget.iconPress(doctor);
+                                },
+                                child: Column(
+                                  children: [
+                                    Row(
                                       children: [
-                                        Text(
-                                          'Agendar cita',
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontFamily: 'butLog',
-                                              fontSize: 14
+                                        ClipRRect(
+                                          borderRadius: BorderRadius.circular(100),
+                                          child: Image.asset(
+                                            "assets/images/doctor_avatar.jpg",
+                                            height: 75,
+                                            width: 75,
+                                            fit: BoxFit.cover,
                                           ),
                                         ),
-                                        SizedBox(width: 10,),
-                                        Image.asset('assets/images/calendar_white.png',width: 20,)
+                                        const SizedBox(width: 12),
+                                        Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              doctor['Nombre'] ?? '',
+                                              style: const TextStyle(
+                                                fontFamily: 'butLog',
+                                                fontSize: 16,
+                                              ),
+                                            ),
+                                            Text(
+                                              doctor['Especialidad'] ?? '',
+                                              style: const TextStyle(
+                                                fontFamily: 'cuerpo',
+                                                fontSize: 14,
+                                                color: Colors.black,
+                                              ),
+                                            ),
+                                            Text(
+                                              '${doctor['comentarios'].length} opiniones',
+                                              style:TextStyle(
+                                                  fontFamily: 'cuerpo',
+                                                  fontSize: 14,
+                                                  color: con.placeholder
+                                              ),
+                                            ),
+                                          ],
+                                        ),
                                       ],
                                     ),
-                                    style: ElevatedButton.styleFrom(
-                                      minimumSize:Size(20, 35),
-                                      backgroundColor: con.Cerulean,
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(15)
-                                      ),
+                                    SizedBox(height: 10,),
+                                    Row(
+                                      children: [
+                                        Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Row(
+                                              children: [
+                                                Column(
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children: [
+                                                    Row(
+                                                      children: [
+                                                        Image.asset('assets/images/gps.png', width: 20,),
+                                                        SizedBox(width: 5,),
+                                                        Text(
+                                                          doctor['Direccion'] ?? 'Av Himno Nacional 815,Las Águilas 3ra Sección,78134',
+                                                          style: TextStyle(
+                                                              color: Colors.black,
+                                                              fontSize: 14
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    SizedBox(height: 3,),
+                                                    Row(
+                                                      children: [
+                                                        SizedBox(width: 20,),
+                                                        Text(
+                                                          'Consultorio: ${doctor['Consultorio']}',
+                                                          style: TextStyle(
+                                                              color: con.placeholder,
+                                                              fontSize: 13
+                                                          ),
+                                                        )
+                                                      ],
+                                                    ),
+                                                    Row(
+                                                      children: [
+                                                        Image.asset('assets/images/cash.png', width: 20,),
+                                                        SizedBox(width: 5,),
+                                                        Text(
+                                                          'Primera consulta:',
+                                                          style: TextStyle(
+                                                              color: Colors.black,
+                                                              fontSize: 14
+                                                          ),
+                                                        ),
+                                                        SizedBox(width: 10,),
+                                                        Text(
+                                                          doctor['Costo'] != null ? '\$${doctor['Costo']}' : 'No especificado',
+                                                          style: TextStyle(
+                                                            color: Colors.black,
+                                                            fontSize: 15,
+                                                            fontFamily: 'butLog',
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                )
+                                              ],
+                                            )
+                                          ],
+                                        ),
 
-                                      padding: EdgeInsets.symmetric(horizontal:15),
-
+                                      ],
                                     ),
-                                  )
-                                ],
-                              )
-
+                                    SizedBox(height: 10,),
+                                  ],
+                                ),
+                              ),
                             ],
                           )
                       );
