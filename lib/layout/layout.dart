@@ -16,6 +16,7 @@ class MainLayoutState extends State<MainLayout> {
   int currentPageIndex = 1;
   int homeSubPageIndex = 0;
   String searchQuery = "";
+  Map<String, dynamic> profileDoc = {};
 
   @override
   Widget build(BuildContext context) {
@@ -26,12 +27,13 @@ class MainLayoutState extends State<MainLayout> {
           searchQuery = query;
         });
       }),
-      DoctorsListScreen(query: searchQuery,iconPress: (){
+      DoctorsListScreen(query: searchQuery, iconPress: (Map<String, dynamic> doctor){
         setState(() {
           homeSubPageIndex=2;
+          profileDoc = doctor;
         });
       }),
-      Profile(backPress:(){
+      Profile(doctor: profileDoc, backPress:(){
         setState(() {
           homeSubPageIndex=1;
         });
