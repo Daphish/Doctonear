@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:medichub/layout/layout.dart';
 import 'package:medichub/login.dart';
+import 'package:medichub/screens/comments_screen.dart';
 import 'package:medichub/screens/profile.dart';
 import 'package:medichub/screens/appointments_screen.dart';
 import 'package:medichub/screens/home_screen.dart';
@@ -47,7 +48,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const Signup(),
+      home: const CommentsScreen(),
     );
   }
 }
