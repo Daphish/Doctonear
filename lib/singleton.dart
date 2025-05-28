@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -110,7 +112,7 @@ class Singleton {
     }
   }
 
-  Future<User?> registerDoctor(String email, String password, int edad, String name, String gender, int telephone, String cedula, String description, String direction, String services, String specialty, BuildContext context) async {
+  Future<User?> registerDoctor(String email, String password, int edad, String name, String gender, int telephone, String cedula, String description, String direction, String services, String specialty,String office,Float32x4 costs, BuildContext context) async {
     try {
       UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: email,
@@ -124,7 +126,9 @@ class Singleton {
 
         try {
           await FirebaseFirestore.instance.collection('Doctores').doc(uid).set({
-            'Cedula': cedula,
+            'Cedula': cedula,///poner mismo orden de la base de datos
+            'Consultorio': office,
+            'Costo':costs,
             'Descripcion': description,
             'Direccion': direction,
             'Edad': edad,
