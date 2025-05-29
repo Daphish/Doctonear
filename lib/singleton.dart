@@ -305,7 +305,8 @@ class Singleton {
         'IdDoctor': doctor['id'],
         'IdPaciente': FirebaseAuth.instance.currentUser?.uid,
         'NombreDoctor': doctor['Nombre'],
-        'NombrePaciente': userData['Nombre']
+        'NombrePaciente': userData['Nombre'],
+        'GeneroDoctor': doctor['Genero']
       });
     } catch (e) {
       print('Error al agendar la cita: $e');
