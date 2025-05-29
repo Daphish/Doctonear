@@ -42,32 +42,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                  child: Column(
                    mainAxisSize: MainAxisSize.max,
                    children: [
-                     Stack(
-                       children: [
-                         Container(
-                           padding: EdgeInsets.all(15),
-                           child:ClipRRect(
-                             borderRadius: BorderRadius.circular(100),
-                             child: Image.asset(
-                               "assets/images/doctor_avatar.jpg",
-                               height: 150,
-                               width: 150,
-                               fit: BoxFit.cover,
-                             ),
-                           ),
-                         ),
-                         Positioned(
-                           bottom: 0,
-                           right: 0,
-                           child:IconButton(
-                             onPressed: (){},
-                             icon: Icon(Icons.edit,color: con.Prussian_Blue,size: 30,),
-                             hoverColor: Colors.transparent,
-                             highlightColor: Colors.transparent,
-                           ) ,
-                         )
-
-                       ],
+                     ClipRRect(
+                       borderRadius: BorderRadius.circular(100),
+                       child: Image.asset(
+                         "assets/images/doctor_avatar.jpg",
+                         height: 150,
+                         width: 150,
+                         fit: BoxFit.cover,
+                       ),
                      ),
                      Row(
                        crossAxisAlignment: CrossAxisAlignment.center,
@@ -79,12 +61,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                fontFamily: 'bold',
                                fontSize: 30
                            ),
-                         ),
-                         IconButton(
-                           onPressed: (){},
-                           icon: Icon(Icons.edit,color: con.Prussian_Blue,size: 30,),
-                           hoverColor: Colors.transparent,
-                           highlightColor: Colors.transparent,
                          )
                        ],
                      ),
@@ -115,7 +91,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                          singleton.userData['Edad'].toString(),
                                          style: TextStyle(
                                              fontSize: 16,
-                                             fontFamily: 'bold',
+                                             fontFamily: 'butLog',
                                              color: Colors.black
                                          ),
                                        ),
@@ -124,19 +100,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                  ],
                                )
                            ),
-                           Expanded(
-                               flex: 1,
-                               child:Column(
-                                 children: [
-                                   IconButton(
-                                     onPressed: (){},
-                                     icon: Icon(Icons.edit,color: con.Prussian_Blue,size: 30,),
-                                     hoverColor: Colors.transparent,
-                                     highlightColor: Colors.transparent,
-                                   )
-                                 ],
-                               )
-                           )
                          ],
                        ),
                      ),
@@ -167,25 +130,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                          singleton.userData['Genero'],
                                          style: TextStyle(
                                              fontSize: 16,
-                                             fontFamily: 'bold',
+                                             fontFamily: 'butLog',
                                              color: Colors.black
                                          ),
                                        ),
                                      ],
                                    ),
-                                 ],
-                               )
-                           ),
-                           Expanded(
-                               flex: 1,
-                               child:Column(
-                                 children: [
-                                   IconButton(
-                                     onPressed: (){},
-                                     icon: Icon(Icons.edit,color: con.Prussian_Blue,size: 30,),
-                                     hoverColor: Colors.transparent,
-                                     highlightColor: Colors.transparent,
-                                   )
                                  ],
                                )
                            )
@@ -219,25 +169,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                          singleton.userData['Telefono'].toString(),
                                          style: TextStyle(
                                              fontSize: 16,
-                                             fontFamily: 'bold',
+                                             fontFamily: 'butLog',
                                              color: Colors.black
                                          ),
                                        ),
                                      ],
                                    ),
-                                 ],
-                               )
-                           ),
-                           Expanded(
-                               flex: 1,
-                               child:Column(
-                                 children: [
-                                   IconButton(
-                                     onPressed: (){},
-                                     icon: Icon(Icons.edit,color: con.Prussian_Blue,size: 30,),
-                                     hoverColor: Colors.transparent,
-                                     highlightColor: Colors.transparent,
-                                   )
                                  ],
                                )
                            )
@@ -270,7 +207,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                          singleton.userData['Rol'],
                                          style: TextStyle(
                                              fontSize: 16,
-                                             fontFamily: 'bold',
+                                             fontFamily: 'butLog',
                                              color: Colors.black
                                          ),
                                        ),
@@ -309,25 +246,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                          singleton.userData['Cedula'],
                                          style: TextStyle(
                                              fontSize: 16,
-                                             fontFamily: 'bold',
+                                             fontFamily: 'butLog',
                                              color: Colors.black
                                          ),
                                        ),
                                      ],
                                    ),
-                                 ],
-                               )
-                           ),
-                           Expanded(
-                               flex: 1,
-                               child:Column(
-                                 children: [
-                                   IconButton(
-                                     onPressed: (){},
-                                     icon: Icon(Icons.edit,color: con.Prussian_Blue,size: 30,),
-                                     hoverColor: Colors.transparent,
-                                     highlightColor: Colors.transparent,
-                                   )
                                  ],
                                )
                            )
@@ -339,49 +263,34 @@ class _ProfileScreenState extends State<ProfileScreen> {
                      ),
                        Padding(
                          padding: EdgeInsets.only(left: 10,right: 10),
-                         child: Row(
+                         child: Column(
                            children: [
-                             Expanded(
-                                 flex:5,
-                                 child: Row(
-                                   children: [
-                                     Column(
-                                       crossAxisAlignment: CrossAxisAlignment.start,
-                                       children: [
-                                         Text(
-                                           'Consultorio',
-                                           style: TextStyle(
-                                               fontSize: 18,
-                                               fontFamily: 'bold',
-                                               color: con.Cerulean
-                                           ),
-                                         ),
-                                         Text(
-                                           singleton.userData['Consultorio'],
-                                           style: TextStyle(
-                                               fontSize: 16,
-                                               fontFamily: 'bold',
-                                               color: Colors.black
-                                           ),
-                                         ),
-                                       ],
-                                     ),
-                                   ],
-                                 )
+                             Row(
+                               children: [
+                                 Text(
+                                   'Consultorio',
+                                   style: TextStyle(
+                                       fontSize: 18,
+                                       fontFamily: 'bold',
+                                       color: con.Cerulean
+                                   ),
+                                 ),
+                               ],
                              ),
-                             Expanded(
-                                 flex: 1,
-                                 child:Column(
-                                   children: [
-                                     IconButton(
-                                       onPressed: (){},
-                                       icon: Icon(Icons.edit,color: con.Prussian_Blue,size: 30,),
-                                       hoverColor: Colors.transparent,
-                                       highlightColor: Colors.transparent,
-                                     )
-                                   ],
+                             Row(
+                               children: [
+                                 Expanded(
+                                   child: Text(
+                                     singleton.userData['Consultorio'],
+                                     style: TextStyle(
+                                         fontSize: 16,
+                                         fontFamily: 'butLog',
+                                         color: Colors.black
+                                     ),
+                                   ),
                                  )
-                             )
+                               ],
+                             ),
                            ],
                          ),
                        ),
@@ -411,25 +320,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                            singleton.userData['Costo'].toString(),
                                            style: TextStyle(
                                                fontSize: 16,
-                                               fontFamily: 'bold',
+                                               fontFamily: 'butLog',
                                                color: Colors.black
                                            ),
                                          ),
                                        ],
                                      ),
-                                   ],
-                                 )
-                             ),
-                             Expanded(
-                                 flex: 1,
-                                 child:Column(
-                                   children: [
-                                     IconButton(
-                                       onPressed: (){},
-                                       icon: Icon(Icons.edit,color: con.Prussian_Blue,size: 30,),
-                                       hoverColor: Colors.transparent,
-                                       highlightColor: Colors.transparent,
-                                     )
                                    ],
                                  )
                              )
@@ -441,49 +337,34 @@ class _ProfileScreenState extends State<ProfileScreen> {
                        ),
                        Padding(
                          padding: EdgeInsets.only(left: 10,right: 10),
-                         child: Row(
+                         child: Column(
                            children: [
-                             Expanded(
-                                 flex:5,
-                                 child: Row(
-                                   children: [
-                                     Column(
-                                       crossAxisAlignment: CrossAxisAlignment.start,
-                                       children: [
-                                         Text(
-                                           'Descripción',
-                                           style: TextStyle(
-                                               fontSize: 18,
-                                               fontFamily: 'bold',
-                                               color: con.Cerulean
-                                           ),
-                                         ),
-                                         Text(
-                                           singleton.userData['Descripcion'],
-                                           style: TextStyle(
-                                               fontSize: 16,
-                                               fontFamily: 'bold',
-                                               color: Colors.black
-                                           ),
-                                         ),
-                                       ],
-                                     ),
-                                   ],
-                                 )
+                             Row(
+                               children: [
+                                 Text(
+                                   'Descripción',
+                                   style: TextStyle(
+                                       fontSize: 18,
+                                       fontFamily: 'bold',
+                                       color: con.Cerulean
+                                   ),
+                                 ),
+                               ],
                              ),
-                             Expanded(
-                                 flex: 1,
-                                 child:Column(
-                                   children: [
-                                     IconButton(
-                                       onPressed: (){},
-                                       icon: Icon(Icons.edit,color: con.Prussian_Blue,size: 30,),
-                                       hoverColor: Colors.transparent,
-                                       highlightColor: Colors.transparent,
-                                     )
-                                   ],
+                             Row(
+                               children: [
+                                 Expanded(
+                                   child: Text(
+                                     singleton.userData['Descripcion'],
+                                     style: TextStyle(
+                                         fontSize: 16,
+                                         fontFamily: 'butLog',
+                                         color: Colors.black
+                                     ),
+                                   ),
                                  )
-                             )
+                               ],
+                             ),
                            ],
                          ),
                        ),
@@ -492,49 +373,34 @@ class _ProfileScreenState extends State<ProfileScreen> {
                        ),
                        Padding(
                          padding: EdgeInsets.only(left: 10,right: 10),
-                         child: Row(
+                         child: Column(
                            children: [
-                             Expanded(
-                                 flex:5,
-                                 child: Row(
-                                   children: [
-                                     Column(
-                                       crossAxisAlignment: CrossAxisAlignment.start,
-                                       children: [
-                                         Text(
-                                           'Dirección',
-                                           style: TextStyle(
-                                               fontSize: 18,
-                                               fontFamily: 'bold',
-                                               color: con.Cerulean
-                                           ),
-                                         ),
-                                         Text(
-                                           singleton.userData['Direccion'],
-                                           style: TextStyle(
-                                               fontSize: 16,
-                                               fontFamily: 'bold',
-                                               color: Colors.black
-                                           ),
-                                         ),
-                                       ],
-                                     ),
-                                   ],
-                                 )
+                             Row(
+                               children: [
+                                 Text(
+                                   'Dirección',
+                                   style: TextStyle(
+                                       fontSize: 18,
+                                       fontFamily: 'bold',
+                                       color: con.Cerulean
+                                   ),
+                                 ),
+                               ],
                              ),
-                             Expanded(
-                                 flex: 1,
-                                 child:Column(
-                                   children: [
-                                     IconButton(
-                                       onPressed: (){},
-                                       icon: Icon(Icons.edit,color: con.Prussian_Blue,size: 30,),
-                                       hoverColor: Colors.transparent,
-                                       highlightColor: Colors.transparent,
-                                     )
-                                   ],
+                             Row(
+                               children: [
+                                 Expanded(
+                                   child: Text(
+                                     singleton.userData['Direccion'],
+                                     style: TextStyle(
+                                         fontSize: 16,
+                                         fontFamily: 'butLog',
+                                         color: Colors.black
+                                     ),
+                                   ),
                                  )
-                             )
+                               ],
+                             ),
                            ],
                          ),
                        ),
@@ -564,25 +430,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                            singleton.userData['Especialidad'],
                                            style: TextStyle(
                                                fontSize: 16,
-                                               fontFamily: 'bold',
+                                               fontFamily: 'butLog',
                                                color: Colors.black
                                            ),
                                          ),
                                        ],
                                      ),
-                                   ],
-                                 )
-                             ),
-                             Expanded(
-                                 flex: 1,
-                                 child:Column(
-                                   children: [
-                                     IconButton(
-                                       onPressed: (){},
-                                       icon: Icon(Icons.edit,color: con.Prussian_Blue,size: 30,),
-                                       hoverColor: Colors.transparent,
-                                       highlightColor: Colors.transparent,
-                                     )
                                    ],
                                  )
                              )
@@ -594,53 +447,77 @@ class _ProfileScreenState extends State<ProfileScreen> {
                        ),
                        Padding(
                          padding: EdgeInsets.only(left: 10,right: 10),
-                         child: Row(
+                         child: Column(
                            children: [
-                             Expanded(
-                                 flex:5,
-                                 child: Row(
-                                   children: [
-                                     Column(
-                                       crossAxisAlignment: CrossAxisAlignment.start,
-                                       children: [
-                                         Text(
-                                           'Servicios',
-                                           style: TextStyle(
-                                               fontSize: 18,
-                                               fontFamily: 'bold',
-                                               color: con.Cerulean
-                                           ),
-                                         ),
-                                         Text(
-                                           singleton.userData['Servicios'],
-                                           style: TextStyle(
-                                               fontSize: 16,
-                                               fontFamily: 'bold',
-                                               color: Colors.black
-                                           ),
-                                         ),
-                                       ],
-                                     ),
-                                   ],
-                                 )
+                             Row(
+                               children: [
+                                 Text(
+                                   'Servicios',
+                                   style: TextStyle(
+                                       fontSize: 18,
+                                       fontFamily: 'bold',
+                                       color: con.Cerulean
+                                   ),
+                                 ),
+                               ],
                              ),
-                             Expanded(
-                                 flex: 1,
-                                 child:Column(
-                                   children: [
-                                     IconButton(
-                                       onPressed: (){},
-                                       icon: Icon(Icons.edit,color: con.Prussian_Blue,size: 30,),
-                                       hoverColor: Colors.transparent,
-                                       highlightColor: Colors.transparent,
-                                     )
-                                   ],
+                             Row(
+                               children: [
+                                 Expanded(
+                                   child: Text(
+                                     singleton.userData['Servicios'],
+                                     style: TextStyle(
+                                         fontSize: 16,
+                                         fontFamily: 'butLog',
+                                         color: Colors.black
+                                     ),
+                                   ),
                                  )
-                             )
+                               ],
+                             ),
                            ],
                          ),
                        ),
-                     ] : []
+                     ] : [],
+                     Divider(
+                       color: con.Cerulean,
+                     ),
+                     SizedBox(height: 10,),
+                     Row(
+                       mainAxisAlignment: MainAxisAlignment.spaceAround,
+                       children: [
+                         ElevatedButton(
+                           onPressed:(){},
+                           style: ElevatedButton.styleFrom(
+                             backgroundColor: con.Cerulean,
+                             padding: EdgeInsets.symmetric(horizontal: 20),
+                           ),
+                           child: Text(
+                             'Editar datos',
+                             style: TextStyle(
+                               color: Colors.white,
+                               fontFamily: 'cuerpo',
+                               fontSize: 16,
+                             ),
+                           ),
+                         ),
+                         ElevatedButton(
+                           onPressed:(){},
+                           style: ElevatedButton.styleFrom(
+                             backgroundColor: con.Cerulean,
+                             padding: EdgeInsets.symmetric(horizontal: 20),
+                           ),
+                           child: Text(
+                             'Cerrar sesión',
+                             style: TextStyle(
+                               color: Colors.white,
+                               fontFamily: 'cuerpo',
+                               fontSize: 16,
+                             ),
+                           ),
+                         ),
+                       ],
+                     )
                    ],
                  ),
                )
