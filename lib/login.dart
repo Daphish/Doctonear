@@ -12,6 +12,9 @@ class Login extends StatefulWidget {
   const Login({super.key});
 
   @override
+
+
+  @override
   State<Login> createState() => _LoginState();
 }
 
@@ -19,9 +22,45 @@ class _LoginState extends State<Login> {
   Singleton singleton = Singleton();
   bool passIcon=true;
   User? _user;
+  bool _checkingSession = true;
 
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _checkCurrentUser();
+  }
+
+  Future<void> _checkCurrentUser() async {
+    // Verificar si hay un usuario autenticado
+    final currentUser = singleton.currentUser;
+
+    if (currentUser != null) {
+      // Cargar los datos del usuario desde Firestore
+      try {
+        await singleton.loadUserData(currentUser.uid);
+
+        // Navegar a la pantalla principal
+        if (mounted) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => MainLayout()),
+          );
+        }
+      } catch (e) {
+        print('Error cargando datos del usuario: $e');
+        // Mostrar login normalmente si hay error
+      }
+    }
+
+    if (mounted) {
+      setState(() {
+        _checkingSession = false;
+      });
+    }
+  }
 
   void login() async {
     setState(() {
@@ -84,7 +123,7 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
+      body: _checkingSession ? Center(child: CircularProgressIndicator(color: cons.Cerulean)) : SafeArea(
         child: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
