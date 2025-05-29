@@ -75,6 +75,7 @@ class _DoctorsListScreenState extends State<AppointmentsScreen> {
                       itemBuilder:(context,index){
                         final cita = appointments[index];
                         final nombreDoctor = cita['NombreDoctor'] ?? 'Sin nombre';
+                        final genero=cita['Genero'] ?? 'Sin genero';
                         final direccion = cita['Direccion'] ?? '';
                         final especialidad = cita['Especialidad'] ?? '';
                         final inicio = (cita['Inicio'] as Timestamp).toDate();
@@ -100,15 +101,28 @@ class _DoctorsListScreenState extends State<AppointmentsScreen> {
                               children: [
                                 Row(
                                   children: [
-                                    ClipRRect(
-                                      borderRadius: BorderRadius.circular(100),
-                                      child: Image.asset(
-                                        "assets/images/doctor_avatar.jpg",
-                                        height: 75,
-                                        width: 75,
-                                        fit: BoxFit.cover,
+                                    ...cita['GeneroDoctor']=='Femenino' ?[
+                                      ClipRRect(
+                                        borderRadius: BorderRadius.circular(100),
+                                        child: Image.asset(
+                                          "assets/images/doctora.png",
+                                          height: 75,
+                                          width: 75,
+                                          fit: BoxFit.cover,
+                                        ),
                                       ),
-                                    ),
+                                    ]:[
+                                      ClipRRect(
+                                        borderRadius: BorderRadius.circular(100),
+                                        child: Image.asset(
+                                          "assets/images/doctor.png",
+                                          height: 75,
+                                          width: 75,
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                    ],
+
                                     const SizedBox(width: 12),
                                     Expanded(
                                       child: Column(
