@@ -11,9 +11,15 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   Singleton singleton = Singleton();
-
+  Map<String, dynamic> data = {};
   String? _selectedGenre;
   final List<String> _genres = ['Femenino', 'Masculino','No-binario'];
+
+  @override
+  void initState() {
+    super.initState();
+    data = singleton.userData;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +65,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                        mainAxisAlignment: MainAxisAlignment.center,
                        children: [
                          Text(
-                           singleton.userData['Nombre'],
+                           data['Nombre'],
                            style: TextStyle(
                                fontFamily: 'bold',
                                fontSize: 30
@@ -91,7 +97,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                          ),
                                        ),
                                        Text(
-                                         singleton.userData['Edad'].toString(),
+                                         data['Edad'].toString(),
                                          style: TextStyle(
                                              fontSize: 16,
                                              fontFamily: 'butLog',
@@ -130,7 +136,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                          ),
                                        ),
                                        Text(
-                                         singleton.userData['Genero'],
+                                         data['Genero'],
                                          style: TextStyle(
                                              fontSize: 16,
                                              fontFamily: 'butLog',
@@ -169,7 +175,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                          ),
                                        ),
                                        Text(
-                                         singleton.userData['Telefono'].toString(),
+                                         data['Telefono'].toString(),
                                          style: TextStyle(
                                              fontSize: 16,
                                              fontFamily: 'butLog',
@@ -207,7 +213,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                          ),
                                        ),
                                        Text(
-                                         singleton.userData['Rol'],
+                                         data['Rol'],
                                          style: TextStyle(
                                              fontSize: 16,
                                              fontFamily: 'butLog',
@@ -222,7 +228,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                          ],
                        ),
                      ),
-                     ...singleton.userData['Rol'] == 'Doctor' ? [
+                     ...data['Rol'] == 'Doctor' ? [
                      Divider(
                        color: con.Cerulean,
                      ),
@@ -246,7 +252,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                          ),
                                        ),
                                        Text(
-                                         singleton.userData['Cedula'],
+                                         data['Cedula'],
                                          style: TextStyle(
                                              fontSize: 16,
                                              fontFamily: 'butLog',
@@ -284,7 +290,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                children: [
                                  Expanded(
                                    child: Text(
-                                     singleton.userData['Consultorio'],
+                                     data['Consultorio'],
                                      style: TextStyle(
                                          fontSize: 16,
                                          fontFamily: 'butLog',
@@ -320,7 +326,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                            ),
                                          ),
                                          Text(
-                                           singleton.userData['Costo'].toString(),
+                                           data['Costo'].toString(),
                                            style: TextStyle(
                                                fontSize: 16,
                                                fontFamily: 'butLog',
@@ -358,7 +364,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                children: [
                                  Expanded(
                                    child: Text(
-                                     singleton.userData['Descripcion'],
+                                     data['Descripcion'],
                                      style: TextStyle(
                                          fontSize: 16,
                                          fontFamily: 'butLog',
@@ -394,7 +400,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                children: [
                                  Expanded(
                                    child: Text(
-                                     singleton.userData['Direccion'],
+                                     data['Direccion'],
                                      style: TextStyle(
                                          fontSize: 16,
                                          fontFamily: 'butLog',
@@ -430,7 +436,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                            ),
                                          ),
                                          Text(
-                                           singleton.userData['Especialidad'],
+                                           data['Especialidad'],
                                            style: TextStyle(
                                                fontSize: 16,
                                                fontFamily: 'butLog',
@@ -468,7 +474,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                children: [
                                  Expanded(
                                    child: Text(
-                                     singleton.userData['Servicios'],
+                                     data['Servicios'],
                                      style: TextStyle(
                                          fontSize: 16,
                                          fontFamily: 'butLog',
@@ -490,19 +496,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                          children: [
                            ElevatedButton(
                              onPressed:(){
-
-                               ////variables
-                               String nombre=singleton.userData['Nombre'];
-                               int edad=singleton.userData['Edad'];
-                               String genero=singleton.userData['Genero'];
-                               String cedula=singleton.userData['Cedula'];
-                               String consultorio=singleton.userData['Consultorio'];
-                               String descrip=singleton.userData['Descripcion'];
-                               String direccion=singleton.userData['Direccion'];
-                               String especialidad=singleton.userData['Especialidad'];
-                               String servicios=singleton.userData['Servicios'];
-                               int tel=singleton.userData['Telefono'];
-                               int costo=singleton.userData['Costo'];
+                               String nombre=data['Nombre'];
+                               int edad=data['Edad'];
+                               String genero=data['Genero'];
+                               String cedula=data['Cedula'];
+                               String consultorio=data['Consultorio'];
+                               String descrip=data['Descripcion'];
+                               String direccion=data['Direccion'];
+                               String especialidad=data['Especialidad'];
+                               String servicios=data['Servicios'];
+                               int tel=data['Telefono'];
+                               int costo=data['Costo'];
 
                                showDialog(
                                    context: context,
@@ -516,7 +520,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                          child: Column(
                                            children: [
                                              TextFormField(
-                                               initialValue: singleton.userData['Nombre'],
+                                               initialValue: data['Nombre'],
                                                keyboardType: TextInputType.multiline,
                                                minLines: 1,
                                                maxLines: null,
@@ -554,7 +558,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                              ),
                                              SizedBox(height: 5,),
                                              TextFormField(
-                                                 initialValue: singleton.userData['Edad'].toString(),
+                                                 initialValue: data['Edad'].toString(),
                                                keyboardType: TextInputType.multiline,
                                                minLines: 1,
                                                maxLines: null,
@@ -595,7 +599,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                iconEnabledColor: con.Cerulean,
                                                dropdownColor: Colors.white,
                                                icon: Icon(Icons.keyboard_arrow_down_outlined),
-                                               value: singleton.userData['Genero'],
+                                               value: data['Genero'],
                                                items: _genres.map((genre) {
                                                  return DropdownMenuItem(
                                                    value: genre,
@@ -640,7 +644,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                              ),
                                              SizedBox(height: 5,),
                                              TextFormField(
-                                               initialValue: singleton.userData['Telefono'].toString(),
+                                               initialValue: data['Telefono'].toString(),
                                                keyboardType: TextInputType.multiline,
                                                minLines: 1,
                                                maxLines: null,
@@ -678,7 +682,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                              ),
                                              SizedBox(height: 5,),
                                              TextFormField(
-                                               initialValue: singleton.userData['Cedula'],
+                                               initialValue: data['Cedula'],
                                                keyboardType: TextInputType.multiline,
                                                minLines: 1,
                                                maxLines: null,
@@ -716,7 +720,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                              ),
                                              SizedBox(height: 5,),
                                              TextFormField(
-                                               initialValue: singleton.userData['Consultorio'],
+                                               initialValue: data['Consultorio'],
                                                keyboardType: TextInputType.multiline,
                                                minLines: 1,
                                                maxLines: null,
@@ -754,7 +758,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                              ),
                                              SizedBox(height: 5,),
                                              TextFormField(
-                                               initialValue: singleton.userData['Costo'].toString(),
+                                               initialValue: data['Costo'].toString(),
                                                keyboardType: TextInputType.multiline,
                                                minLines: 1,
                                                maxLines: null,
@@ -792,7 +796,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                              ),
                                              SizedBox(height: 5,),
                                              TextFormField(
-                                               initialValue: singleton.userData['Descripcion'],
+                                               initialValue: data['Descripcion'],
                                                keyboardType: TextInputType.multiline,
                                                minLines: 1,
                                                maxLines: null,
@@ -830,7 +834,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                              ),
                                              SizedBox(height: 5,),
                                              TextFormField(
-                                               initialValue: singleton.userData['Direccion'],
+                                               initialValue: data['Direccion'],
                                                keyboardType: TextInputType.multiline,
                                                minLines: 1,
                                                maxLines: null,
@@ -868,7 +872,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                              ),
                                              SizedBox(height: 5,),
                                              TextFormField(
-                                               initialValue: singleton.userData['Especialidad'],
+                                               initialValue: data['Especialidad'],
                                                keyboardType: TextInputType.multiline,
                                                minLines: 1,
                                                maxLines: null,
@@ -906,7 +910,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                              ),
                                              SizedBox(height: 5,),
                                              TextFormField(
-                                               initialValue: singleton.userData['Servicios'],
+                                               initialValue: data['Servicios'],
                                                keyboardType: TextInputType.multiline,
                                                minLines: 1,
                                                maxLines: null,
@@ -962,7 +966,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                    fontSize: 16,
                                                  ),
                                                ),
-                                               onPressed: () {
+                                               onPressed: () async {
+                                                 var newData = {
+                                                   'Cedula': cedula,
+                                                   'Consultorio': consultorio,
+                                                   'Costo': costo,
+                                                   'Descripcion': descrip,
+                                                   'Direccion': direccion,
+                                                   'Edad': edad,
+                                                   'Especialidad': especialidad,
+                                                   'Genero': genero,
+                                                   'Nombre': nombre,
+                                                   'Rol': data['Rol'],
+                                                   'Servicios': servicios,
+                                                   'Telefono': tel
+                                                 };
+                                                 await singleton.updateDoctorProfile(newData);
+                                                 setState(() {
+                                                   data = newData;
+                                                 });
                                                  Navigator.of(context).pop();
                                                },
                                              ),
@@ -1032,10 +1054,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                              onPressed:(){
 
                                ////variables
-                               String nombre=singleton.userData['Nombre'];
-                               int edad=singleton.userData['Edad'];
-                               String genero=singleton.userData['Genero'];
-                               int tel=singleton.userData['Telefono'];
+                               String nombre=data['Nombre'];
+                               int edad=data['Edad'];
+                               String genero=data['Genero'];
+                               int tel=data['Telefono'];
 
                                showDialog(
                                    context: context,
@@ -1049,7 +1071,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                          child: Column(
                                            children: [
                                              TextFormField(
-                                               initialValue: singleton.userData['Nombre'],
+                                               initialValue: data['Nombre'],
                                                keyboardType: TextInputType.multiline,
                                                minLines: 1,
                                                maxLines: null,
@@ -1087,7 +1109,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                              ),
                                              SizedBox(height: 5,),
                                              TextFormField(
-                                               initialValue: singleton.userData['Edad'].toString(),
+                                               initialValue: data['Edad'].toString(),
                                                keyboardType: TextInputType.multiline,
                                                minLines: 1,
                                                maxLines: null,
@@ -1128,7 +1150,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                iconEnabledColor: con.Cerulean,
                                                dropdownColor: Colors.white,
                                                icon: Icon(Icons.keyboard_arrow_down_outlined),
-                                               value: singleton.userData['Genero'],
+                                               value: data['Genero'],
                                                items: _genres.map((genre) {
                                                  return DropdownMenuItem(
                                                    value: genre,
@@ -1173,7 +1195,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                              ),
                                              SizedBox(height: 5,),
                                              TextFormField(
-                                               initialValue: singleton.userData['Telefono'].toString(),
+                                               initialValue: data['Telefono'].toString(),
                                                keyboardType: TextInputType.multiline,
                                                minLines: 1,
                                                maxLines: null,
@@ -1228,7 +1250,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                    fontSize: 16,
                                                  ),
                                                ),
-                                               onPressed: () {
+                                               onPressed: () async {
+                                                 var newData = {
+                                                   'Edad': edad,
+                                                   'Genero': genero,
+                                                   'Nombre': nombre,
+                                                   'Rol': data['Rol'],
+                                                   'Telefono': tel
+                                                 };
+
+                                                 await singleton.updatePatientProfile(newData);
+                                                 setState(() {
+                                                   data = newData;
+                                                 });
                                                  Navigator.of(context).pop();
                                                },
                                              ),

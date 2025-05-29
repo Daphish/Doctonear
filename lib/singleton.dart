@@ -272,6 +272,44 @@ class Singleton {
     }
   }
 
+  Future<void> updateDoctorProfile(Map<String, dynamic> updatedData) async {
+    try {
+      final uid = FirebaseAuth.instance.currentUser?.uid;
+      if (uid == null) throw 'Usuario no autenticado';
+
+      // Actualiza en Firestore
+      await FirebaseFirestore.instance
+          .collection('Doctores')
+          .doc(uid)
+          .update(updatedData);
+
+      userData.addAll(updatedData);
+
+      print('Perfil actualizado exitosamente');
+    } catch (e) {
+      print('Error al actualizar perfil: $e');
+    }
+  }
+
+  Future<void> updatePatientProfile(Map<String, dynamic> updatedData) async {
+    try {
+      final uid = FirebaseAuth.instance.currentUser?.uid;
+      if (uid == null) throw 'Usuario no autenticado';
+
+      // Actualiza en Firestore
+      await FirebaseFirestore.instance
+          .collection('Pacientes')
+          .doc(uid)
+          .update(updatedData);
+
+      userData.addAll(updatedData);
+
+      print('Perfil actualizado exitosamente');
+    } catch (e) {
+      print('Error al actualizar perfil: $e');
+    }
+  }
+
   // Método para cerrar sesión
   Future<void> signOut() async {
     try {
