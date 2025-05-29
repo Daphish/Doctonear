@@ -1,5 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:medichub/const.dart' as con;
+import 'package:medichub/singleton.dart';
+import 'package:intl/intl.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 class AppointmentsScreen extends StatefulWidget {
   const AppointmentsScreen({super.key});
@@ -9,6 +14,34 @@ class AppointmentsScreen extends StatefulWidget {
 }
 
 class _DoctorsListScreenState extends State<AppointmentsScreen> {
+  Singleton singleton = Singleton();
+  bool isLoading = true;
+  List<Map<String, dynamic>> appointments = [];
+
+  @override
+  void initState() {
+    super.initState();
+    initializeDateFormatting('es_MX', null).then((_) {
+      fetchAppointments();
+    });
+  }
+
+  Future<void> fetchAppointments() async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      final citas = await singleton.getAppointmentsForUser(user.uid);
+      citas.sort((a, b) {
+        final aInicio = (a['Inicio'] as Timestamp).toDate();
+        final bInicio = (b['Inicio'] as Timestamp).toDate();
+        return aInicio.compareTo(bInicio);
+      });
+      setState(() {
+        appointments = citas;
+        isLoading = false;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,9 +68,18 @@ class _DoctorsListScreenState extends State<AppointmentsScreen> {
             child: Column(
                 children:[
                   Expanded(
-                    child: ListView.builder(
-                      itemCount: 5,
+                    child: isLoading ? Center(child: CircularProgressIndicator(color: con.Cerulean)) :
+                    appointments.isEmpty ? Center(child: Text('No tienes citas agendadas', style: TextStyle(fontFamily: 'bold', fontSize: 30),)) :
+                    ListView.builder(
+                      itemCount: appointments.length,
                       itemBuilder:(context,index){
+                        final cita = appointments[index];
+                        final nombreDoctor = cita['NombreDoctor'] ?? 'Sin nombre';
+                        final direccion = cita['Direccion'] ?? '';
+                        final especialidad = cita['Especialidad'] ?? '';
+                        final inicio = (cita['Inicio'] as Timestamp).toDate();
+                        final hora = DateFormat.Hm('es_MX').format(inicio);
+                        final fecha = DateFormat('d MMMM y', 'es_MX').format(inicio);
                         return Container(
                             margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                             padding: const EdgeInsets.all(16),
@@ -73,14 +115,14 @@ class _DoctorsListScreenState extends State<AppointmentsScreen> {
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            'Dra. Giovana Rodríguez',
+                                            nombreDoctor,
                                             style: const TextStyle(
                                               fontFamily: 'butLog',
                                               fontSize: 16,
                                             ),
                                           ),
                                           Text(
-                                            'Ginecologa',
+                                            especialidad,
                                             style: const TextStyle(
                                               fontFamily: 'cuerpo',
                                               fontSize: 14,
@@ -93,11 +135,9 @@ class _DoctorsListScreenState extends State<AppointmentsScreen> {
                                   ],
                                 ),
                                 const SizedBox(height: 12),
-                                // Información de ubicación y cita
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    // Dirección
                                     Row(
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       mainAxisAlignment: MainAxisAlignment.center,
@@ -109,20 +149,12 @@ class _DoctorsListScreenState extends State<AppointmentsScreen> {
                                             crossAxisAlignment: CrossAxisAlignment.start,
                                             children: [
                                               Text(
-                                                'Av Himno Nacional 815,Las Águilas 3ra Sección,78134',
+                                                direccion,
                                                 style: TextStyle(
                                                   color: Colors.black,
                                                   fontSize: 14,
                                                 ),
                                                 softWrap: true,
-                                              ),
-                                              const SizedBox(height: 3),
-                                              Text(
-                                                'Clínica de Maternidad, Consultorio 14 JAJAJAJAJJA YO NO ME BAÑO AVECES',
-                                                style: TextStyle(
-                                                    color: con.placeholder,
-                                                    fontSize: 13
-                                                ),
                                               ),
                                             ],
                                           ),
@@ -145,7 +177,7 @@ class _DoctorsListScreenState extends State<AppointmentsScreen> {
                                         ),
                                         const SizedBox(width: 5),
                                         Text(
-                                          '10:15',
+                                          hora,
                                           style: TextStyle(
                                               color: Colors.black,
                                               fontSize: 15,
@@ -170,7 +202,7 @@ class _DoctorsListScreenState extends State<AppointmentsScreen> {
                                         ),
                                         const SizedBox(width: 5),
                                         Text(
-                                          '9 de abril de 2025',
+                                          fecha,
                                           style: TextStyle(
                                               color: Colors.black,
                                               fontSize: 14
@@ -181,20 +213,28 @@ class _DoctorsListScreenState extends State<AppointmentsScreen> {
                                   ],
                                 ),
                                 const SizedBox(height: 12),
-                                // Botón cancelar
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
                                     ElevatedButton(
-                                      onPressed: (){},
-                                      child: Text(
-                                        'Cancelar',
-                                        style: TextStyle(
-                                            color: con.link,
-                                            fontFamily: 'butLog',
-                                            fontSize: 13
-                                        ),
-                                      ),
+                                      onPressed: () async {
+                                        final citaId = cita['id'];
+                                        if (citaId != null) {
+                                          try {
+                                            await singleton.deleteAppointment(citaId);
+                                            setState(() {
+                                              appointments.removeAt(index);
+                                            });
+                                            ScaffoldMessenger.of(context).showSnackBar(
+                                              SnackBar(content: Text('Cita cancelada')),
+                                            );
+                                          } catch (e) {
+                                            ScaffoldMessenger.of(context).showSnackBar(
+                                              SnackBar(content: Text('Error al cancelar la cita')),
+                                            );
+                                          }
+                                        }
+                                      },
                                       style: ElevatedButton.styleFrom(
                                         minimumSize: Size(81, 33),
                                         side: BorderSide(color: con.link),
@@ -203,6 +243,14 @@ class _DoctorsListScreenState extends State<AppointmentsScreen> {
                                         ),
                                         backgroundColor:Colors.white,
                                         padding: EdgeInsets.symmetric(horizontal: 10),
+                                      ),
+                                      child: Text(
+                                        'Cancelar',
+                                        style: TextStyle(
+                                            color: con.link,
+                                            fontFamily: 'butLog',
+                                            fontSize: 13
+                                        ),
                                       ),
                                     )
                                   ],

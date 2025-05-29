@@ -40,6 +40,7 @@ dependencies:
   http: ^1.4.0
   cloud_firestore: ^5.6.8
   syncfusion_flutter_calendar: ^29.1.38
+  intl: ^0.20.2
 
 dev_dependencies:
   flutter_test:

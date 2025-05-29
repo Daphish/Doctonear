@@ -23,7 +23,6 @@ class _HomeScreenState extends State<HomeScreen> {
     _loadDoctorsInBackground();
   }
 
-  // Cargar doctores en segundo plano para que estén listos
   Future<void> _loadDoctorsInBackground() async {
     if (singleton.doctors.isEmpty) {
       await singleton.getDoctors();
@@ -36,7 +35,6 @@ class _HomeScreenState extends State<HomeScreen> {
     });
 
     try {
-      // Asegurar que los doctores estén cargados antes de buscar
       if (singleton.doctors.isEmpty) {
         await singleton.getDoctors();
       }
