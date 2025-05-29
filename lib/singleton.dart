@@ -202,13 +202,10 @@ class Singleton {
   Future<void> getAppointments(String doctorId) async {
     try {
       CollectionReference citas = FirebaseFirestore.instance.collection('Citas');
-
-      // Consulta con filtro directo por campo
       QuerySnapshot querySnapshot = await citas
           .where('IdDoctor', isEqualTo: doctorId)
           .get();
 
-      // Opcional: mapea los documentos si quieres convertirlos a objetos
       appointments = querySnapshot.docs
           .map((doc) => doc.data() as Map<String, dynamic>)
           .toList();
@@ -216,6 +213,25 @@ class Singleton {
       print(appointments);
     } catch (e) {
       print('Error al obtener las citas: $e');
+    }
+  }
+
+  Future<void> makeAppointment(Map<String, dynamic> doctor, DateTime date, String hour) async {
+    try {
+      final DateTime inicioDateTime = combinarFechaYHora(date, hour);
+      final DateTime finalDateTime = inicioDateTime.add(Duration(hours: 1));
+
+      await FirebaseFirestore.instance.collection('Citas').doc().set({
+        'Direccion': doctor['Direccion'],
+        'Especialidad': doctor['Especialidad'],
+        'Final': Timestamp.fromDate(finalDateTime),
+        'Inicio': Timestamp.fromDate(inicioDateTime),
+        'IdDoctor': doctor['id'],
+        'IdPaciente': FirebaseAuth.instance.currentUser?.uid,
+        'NombreDoctor': doctor['Nombre']
+      });
+    } catch (e) {
+      print('Error al agendar la cita: $e');
     }
   }
 
@@ -229,5 +245,12 @@ class Singleton {
     }
     //await FacebookAuth.instance.logOut();
     await _auth.signOut();
+  }
+
+  DateTime combinarFechaYHora(DateTime fecha, String horaString) {
+    final partes = horaString.split(':');
+    final horas = int.parse(partes[0]);
+    final minutos = int.parse(partes[1]);
+    return DateTime(fecha.year, fecha.month, fecha.day, horas, minutos);
   }
 }

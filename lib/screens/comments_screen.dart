@@ -4,8 +4,7 @@ import 'package:medichub/const.dart' as con;
 class CommentsScreen extends StatefulWidget {
   final Map<String, dynamic> doctor;
   final void Function() backPress;
-  final Function(String) saveComment;
-  const CommentsScreen({super.key, required this.doctor, required this.backPress, required this.saveComment});
+  const CommentsScreen({super.key, required this.doctor, required this.backPress});
 
   @override
   State<CommentsScreen> createState() => _CommentsScreenState();

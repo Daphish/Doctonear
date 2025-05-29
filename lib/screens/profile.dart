@@ -25,9 +25,7 @@ class _ProfileState extends State<Profile> {
   }
 
   Future<void> _loadAppointmentsInBackground() async {
-    if (singleton.appointments.isEmpty) {
-      await singleton.getAppointments(widget.doctor['id']);
-    }
+    await singleton.getAppointments(widget.doctor['id']);
   }
 
   Future<void> _handleAppointment() async {
@@ -36,7 +34,6 @@ class _ProfileState extends State<Profile> {
     });
 
     try {
-      // Asegurar que los doctores estén cargados antes de buscar
       if (singleton.appointments.isEmpty) {
         await singleton.getAppointments(widget.doctor['id']);
       }
