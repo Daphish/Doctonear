@@ -19,6 +19,7 @@ class Singleton {
   bool loader = false;
   String messageLogin = '';
   List<Map<String, dynamic>>doctors = [];
+  Map<String, dynamic>userData = {};
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
@@ -43,6 +44,16 @@ class Singleton {
         password: password,
       );
       // await userCredential.user?.reload();
+      final uid = userCredential.user?.uid;
+      final docSnapshot = await FirebaseFirestore.instance.collection('Doctores').doc(uid).get();
+      if (docSnapshot.exists) {
+        userData = docSnapshot.data() as Map<String, dynamic>;
+      } else {
+        final pacienteSnapshot = await FirebaseFirestore.instance.collection('Pacientes').doc(uid).get();
+        if (pacienteSnapshot.exists) {
+          userData = pacienteSnapshot.data() as Map<String, dynamic>;
+        }
+      }
 
       return userCredential.user;
     } on FirebaseAuthException catch (e) {

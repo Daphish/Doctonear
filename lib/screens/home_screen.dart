@@ -95,7 +95,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         style: TextStyle(
                           fontFamily: 'titulo',
                           fontSize: 30,
-                          color: Colors.white,
+                          color: cons.Prussian_Blue,
                         ),
                         textAlign: TextAlign.center,
                       ),
