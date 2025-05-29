@@ -213,12 +213,28 @@ class _DoctorsListScreenState extends State<AppointmentsScreen> {
                                   ],
                                 ),
                                 const SizedBox(height: 12),
-                                // Botón cancelar
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
                                     ElevatedButton(
-                                      onPressed: (){},
+                                      onPressed: () async {
+                                        final citaId = cita['id'];
+                                        if (citaId != null) {
+                                          try {
+                                            await singleton.deleteAppointment(citaId);
+                                            setState(() {
+                                              appointments.removeAt(index);
+                                            });
+                                            ScaffoldMessenger.of(context).showSnackBar(
+                                              SnackBar(content: Text('Cita cancelada')),
+                                            );
+                                          } catch (e) {
+                                            ScaffoldMessenger.of(context).showSnackBar(
+                                              SnackBar(content: Text('Error al cancelar la cita')),
+                                            );
+                                          }
+                                        }
+                                      },
                                       style: ElevatedButton.styleFrom(
                                         minimumSize: Size(81, 33),
                                         side: BorderSide(color: con.link),

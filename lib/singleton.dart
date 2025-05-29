@@ -209,7 +209,6 @@ class Singleton {
       appointments = querySnapshot.docs
           .map((doc) => doc.data() as Map<String, dynamic>)
           .toList();
-      print(appointments);
     } catch (e) {
       print('Error al obtener las citas: $e');
     }
@@ -223,11 +222,23 @@ class Singleton {
           .get();
 
       return citas.docs
-          .map((doc) => doc.data() as Map<String, dynamic>)
+          .map((doc) => {
+            'id': doc.id,
+            ...doc.data(),
+          })
           .toList();
     } catch (e) {
       print('Error al obtener las citas: $e');
       return [];
+    }
+  }
+
+  Future<void> deleteAppointment(String appointmentId) async {
+    try {
+      await FirebaseFirestore.instance.collection('Citas').doc(appointmentId).delete();
+    } catch (e) {
+      print('Error al eliminar la cita: $e');
+      rethrow;
     }
   }
 
