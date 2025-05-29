@@ -216,6 +216,25 @@ class Singleton {
     }
   }
 
+  Future<List<Map<String, dynamic>>> getAppointmentsForDoctor(String userId) async {
+    try {
+      final citas = await FirebaseFirestore.instance
+          .collection('Citas')
+          .where('IdDoctor', isEqualTo: FirebaseAuth.instance.currentUser?.uid)
+          .get();
+
+      return citas.docs
+          .map((doc) => {
+        'id': doc.id,
+        ...doc.data(),
+      })
+          .toList();
+    } catch (e) {
+      print('Error al obtener las citas: $e');
+      return [];
+    }
+  }
+
   Future<List<Map<String, dynamic>>> getAppointmentsForUser(String userId) async {
     try {
       final citas = await FirebaseFirestore.instance
@@ -256,7 +275,8 @@ class Singleton {
         'Inicio': Timestamp.fromDate(inicioDateTime),
         'IdDoctor': doctor['id'],
         'IdPaciente': FirebaseAuth.instance.currentUser?.uid,
-        'NombreDoctor': doctor['Nombre']
+        'NombreDoctor': doctor['Nombre'],
+        'NombrePaciente': userData['Nombre']
       });
     } catch (e) {
       print('Error al agendar la cita: $e');
