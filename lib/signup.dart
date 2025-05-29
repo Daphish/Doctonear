@@ -173,12 +173,18 @@ class _SignupState extends State<Signup> {
                         ),
                         DropdownButtonFormField<String>(
                           iconEnabledColor: cons.Cerulean,
+                          dropdownColor: Colors.white,
                           icon: Icon(Icons.keyboard_arrow_down_outlined),
                           value: _selectedRole,
                           items: _roles.map((role) {
                             return DropdownMenuItem(
                               value: role,
-                              child: Text(role),
+                              child: Text(
+                                role,
+                                style: TextStyle(
+                                    color: Colors.black
+                                ),
+                              ),
                             );
                           }).toList(),
                           onChanged: (value) {
@@ -347,12 +353,13 @@ class _SignupState extends State<Signup> {
                         SizedBox(height: 7),
                         DropdownButtonFormField<String>(
                           iconEnabledColor: cons.Cerulean,
+                          dropdownColor: Colors.white,
                           icon: Icon(Icons.keyboard_arrow_down_outlined),
                           value: _selectedGenre,
                           items: _genres.map((genre) {
                             return DropdownMenuItem(
                               value: genre,
-                              child: Text(genre),
+                              child: Text(genre,style: TextStyle(color:Colors.black),),
                             );
                           }).toList(),
                           onChanged: (value) {
@@ -615,6 +622,7 @@ class _SignupState extends State<Signup> {
                               fillColor: Colors.white,
                             ),
                           ),
+                          SizedBox(height: 7),
                         TextFormField(
                           controller: specialtyController,
                           style: TextStyle(
