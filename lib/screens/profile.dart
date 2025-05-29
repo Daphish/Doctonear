@@ -1,17 +1,58 @@
 import 'package:flutter/material.dart';
 import 'package:medichub/const.dart' as cons;
+import 'package:medichub/singleton.dart';
 
 class Profile extends StatefulWidget {
   final void Function() backPress;
+  final Function(List<Map<String, dynamic>>) appointmentPress;
+  final void Function() commentPress;
   final Map<String, dynamic> doctor;
 
-  const Profile({super.key, required this.backPress, required this.doctor});
+  const Profile({super.key, required this.backPress, required this.appointmentPress, required this.commentPress, required this.doctor});
 
   @override
   State<Profile> createState() => _ProfileState();
 }
 
 class _ProfileState extends State<Profile> {
+  bool isLoading = false;
+  Singleton singleton = Singleton();
+
+  @override
+  void initState() {
+    super.initState();
+    _loadAppointmentsInBackground();
+  }
+
+  Future<void> _loadAppointmentsInBackground() async {
+    if (singleton.appointments.isEmpty) {
+      await singleton.getAppointments(widget.doctor['id']);
+    }
+  }
+
+  Future<void> _handleAppointment() async {
+    setState(() {
+      isLoading = true;
+    });
+
+    try {
+      // Asegurar que los doctores estén cargados antes de buscar
+      if (singleton.appointments.isEmpty) {
+        await singleton.getAppointments(widget.doctor['id']);
+      }
+
+      widget.appointmentPress(singleton.appointments);
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error al cargar citas: $e'))
+      );
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -78,7 +119,7 @@ class _ProfileState extends State<Profile> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       ElevatedButton(
-                        onPressed: () {},
+                        onPressed: isLoading ? null : _handleAppointment,
                         style: ElevatedButton.styleFrom(
                           backgroundColor: cons.Cerulean,
                           padding: EdgeInsets.symmetric(horizontal: 20),

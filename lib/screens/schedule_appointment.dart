@@ -2,13 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:medichub/const.dart' as con;
 
 class ScheduleAppointment extends StatefulWidget {
-  const ScheduleAppointment({super.key});
+  final List<Map<String, dynamic>> appointments;
+  final Map<String, dynamic> doctor;
+  final void Function() backPress;
+  final Function(Map<String, dynamic>) saveAppointment;
+  const ScheduleAppointment({super.key, required this.appointments, required this.backPress, required this.saveAppointment, required this.doctor});
 
   @override
   State<ScheduleAppointment> createState() => _ScheduleAppointmentState();
 }
 
 class _ScheduleAppointmentState extends State<ScheduleAppointment> {
+  DateTime? _selectedDate;
+  String? _selectedHour;
   final List<String> horas = [
     '11:00', '12:00', '13:00', '14:00', '15:00',
     '16:00', '17:00', '18:00', '19:00',

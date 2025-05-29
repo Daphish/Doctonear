@@ -20,6 +20,7 @@ class Singleton {
   String messageLogin = '';
   List<Map<String, dynamic>>doctors = [];
   Map<String, dynamic>userData = {};
+  List<Map<String, dynamic>>appointments = [];
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
@@ -196,6 +197,26 @@ class Singleton {
       print('Error al obtener los doctores : $e');
     }
     print(doctors);
+  }
+
+  Future<void> getAppointments(String doctorId) async {
+    try {
+      CollectionReference citas = FirebaseFirestore.instance.collection('Citas');
+
+      // Consulta con filtro directo por campo
+      QuerySnapshot querySnapshot = await citas
+          .where('IdDoctor', isEqualTo: doctorId)
+          .get();
+
+      // Opcional: mapea los documentos si quieres convertirlos a objetos
+      appointments = querySnapshot.docs
+          .map((doc) => doc.data() as Map<String, dynamic>)
+          .toList();
+
+      print(appointments);
+    } catch (e) {
+      print('Error al obtener las citas: $e');
+    }
   }
 
   // Método para cerrar sesión

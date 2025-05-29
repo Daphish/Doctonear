@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:medichub/const.dart' as con;
 
 class CommentsScreen extends StatefulWidget {
-  const CommentsScreen({super.key});
+  final Map<String, dynamic> doctor;
+  final void Function() backPress;
+  final Function(String) saveComment;
+  const CommentsScreen({super.key, required this.doctor, required this.backPress, required this.saveComment});
 
   @override
   State<CommentsScreen> createState() => _CommentsScreenState();
