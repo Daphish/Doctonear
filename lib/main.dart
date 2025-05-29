@@ -8,6 +8,7 @@ import 'package:medichub/screens/appointments_screen.dart';
 import 'package:medichub/screens/home_screen.dart';
 import 'package:medichub/screens/profile_screen.dart';
 import 'package:medichub/screens/schedule_appointment.dart';
+import 'package:medichub/screens/schedule_doctor.dart';
 import 'package:medichub/signup.dart';
 import'package:medichub/screens/doctors_list_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -49,7 +50,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const Login(),
+      home: const ScheduleDoctor(),
     );
   }
 }
