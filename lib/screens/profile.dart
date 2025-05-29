@@ -79,6 +79,7 @@ class _ProfileState extends State<Profile> {
       body: SafeArea(
         child: Container(
           color: Colors.white,
+          height: MediaQuery.of(context).size.height,
           child: SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),

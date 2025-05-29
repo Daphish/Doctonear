@@ -38,7 +38,7 @@ class _SignupState extends State<Signup> {
   final List<String> _roles = ['Paciente', 'Doctor'];
 
   String? _selectedGenre;
-  final List<String> _genres = ['Femenino', 'Masculino','No-binario'];
+  final List<String> _genres = ['Femenino', 'Masculino'];
 
   void register() async {
     setState(() {
