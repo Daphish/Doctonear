@@ -4,6 +4,7 @@ import 'package:medichub/screens/profile.dart';
 import 'package:medichub/screens/appointments_screen.dart';
 import 'package:medichub/screens/profile_screen.dart';
 import 'package:medichub/screens/schedule_appointment.dart';
+import 'package:medichub/screens/schedule_doctor.dart';
 import '../screens/home_screen.dart';
 import '../screens/doctors_list_screen.dart';
 import '../singleton.dart';
@@ -66,7 +67,9 @@ class MainLayoutState extends State<MainLayout> {
     ];
 
     final List<Widget> _screens = [
-      AppointmentsScreen(),
+      singleton.userData['Rol'] == 'Doctor'
+          ? ScheduleDoctor()
+          : AppointmentsScreen(),
       _homeSectionScreens[homeSubPageIndex],
       ProfileScreen(),
     ];
