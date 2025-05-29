@@ -119,7 +119,7 @@ class _ProfileState extends State<Profile> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       ElevatedButton(
-                        onPressed: () {},
+                        onPressed: isLoading ? null : _handleAppointment,
                         style: ElevatedButton.styleFrom(
                           backgroundColor: cons.Cerulean,
                           padding: EdgeInsets.symmetric(horizontal: 20),
