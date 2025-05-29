@@ -55,16 +55,8 @@ class MainLayoutState extends State<MainLayout> {
         setState(() {
           homeSubPageIndex=2;
         });
-      }, saveAppointment:(Map<String, dynamic> appointment){
-        setState(() {
-          homeSubPageIndex=2;
-        });
       }),
       CommentsScreen(doctor: profileDoc, backPress:(){
-        setState(() {
-          homeSubPageIndex=2;
-        });
-      }, saveComment:(String comment){
         setState(() {
           homeSubPageIndex=2;
         });
