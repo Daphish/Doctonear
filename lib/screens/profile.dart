@@ -112,55 +112,92 @@ class _ProfileState extends State<Profile> {
                     ),
                   ),
                   SizedBox(height: 8),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      ElevatedButton(
-                        onPressed: isLoading ? null : _handleAppointment,
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: cons.Cerulean,
-                          padding: EdgeInsets.symmetric(horizontal: 20),
-                        ),
-                        child: Row(
-                          children: [
-                            Image.asset('assets/images/calendar_white.png', width: 20),
-                            SizedBox(width: 10),
-                            Text(
-                              'Agendar cita',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontFamily: 'cuerpo',
-                                fontSize: 14,
+                  ...singleton.userData['Rol'] == 'Doctor' ? [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        ElevatedButton(
+                          onPressed: () {
+                            widget.commentPress();
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: cons.Cerulean,
+                            padding: EdgeInsets.symmetric(horizontal: 20),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              SizedBox(width: 20),
+                              Image.asset('assets/images/comments_white.png', width: 20),
+                              SizedBox(width: 10),
+                              Text(
+                                'Comentar',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontFamily: 'cuerpo',
+                                  fontSize: 14,
+                                ),
                               ),
-                            )
-                          ],
+                              SizedBox(width: 30),
+                            ],
+                          ),
                         ),
-                      ),
-                      ElevatedButton(
-                        onPressed: () {
-                          widget.commentPress();
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: cons.Cerulean,
-                          padding: EdgeInsets.symmetric(horizontal: 20),
+                      ],
+                    ),
+                  ]:[
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        ElevatedButton(
+                          onPressed: isLoading ? null : _handleAppointment,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: cons.Cerulean,
+                            padding: EdgeInsets.symmetric(horizontal: 20),
+                          ),
+                          child: Row(
+                            children: [
+                              Image.asset('assets/images/calendar_white.png', width: 20),
+                              SizedBox(width: 10),
+                              Text(
+                                'Agendar cita',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontFamily: 'cuerpo',
+                                  fontSize: 14,
+                                ),
+                              )
+                            ],
+                          ),
                         ),
-                        child: Row(
-                          children: [
-                            Image.asset('assets/images/comments_white.png', width: 20),
-                            SizedBox(width: 10),
-                            Text(
-                              'Comentar',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontFamily: 'cuerpo',
-                                fontSize: 14,
+                        ElevatedButton(
+                          onPressed: () {
+                            widget.commentPress();
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: cons.Cerulean,
+                            padding: EdgeInsets.symmetric(horizontal: 20),
+                          ),
+                          child: Row(
+                            children: [
+                              SizedBox(width: 10),
+                              Image.asset('assets/images/comments_white.png', width: 20),
+                              SizedBox(width: 10),
+                              Text(
+                                'Comentar',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontFamily: 'cuerpo',
+                                  fontSize: 14,
+                                ),
                               ),
-                            )
-                          ],
+                              SizedBox(width: 15),
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
+                      ],
+                    ),
+                  ],
+
                   SizedBox(height: 20),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
