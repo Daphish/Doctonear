@@ -103,7 +103,7 @@ class _DoctorsListScreenState extends State<AppointmentsScreen> {
                                     ClipRRect(
                                       borderRadius: BorderRadius.circular(100),
                                       child: Image.asset(
-                                        "assets/images/doctor_avatar.jpg",
+                                        "assets/images/doctora.png",
                                         height: 75,
                                         width: 75,
                                         fit: BoxFit.cover,

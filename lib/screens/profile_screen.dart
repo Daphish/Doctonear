@@ -14,7 +14,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Singleton singleton = Singleton();
   Map<String, dynamic> data = {};
   String? _selectedGenre;
-  final List<String> _genres = ['Femenino', 'Masculino','No-binario'];
+  final List<String> _genres = ['Femenino', 'Masculino'];
 
   @override
   void initState() {
@@ -55,7 +55,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                      ClipRRect(
                        borderRadius: BorderRadius.circular(100),
                        child: Image.asset(
-                         "assets/images/doctor_avatar.jpg",
+                       singleton.userData['Genero'] == 'Femenino' ? singleton.userData['Rol'] == 'Doctor' ? "assets/images/doctora.png":"assets/images/pacienta.png" : singleton.userData['Rol'] == 'Doctor' ? "assets/images/doctor.png":"assets/images/paciente.png",
                          height: 150,
                          width: 150,
                          fit: BoxFit.cover,

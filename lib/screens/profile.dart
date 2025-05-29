@@ -84,15 +84,28 @@ class _ProfileState extends State<Profile> {
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
               child: Column(
                 children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(100),
-                    child: Image.asset(
-                      "assets/images/doctor_avatar.jpg",
-                      height: 150,
-                      width: 150,
-                      fit: BoxFit.cover,
+                  ...widget.doctor['Genero'] == "Femenino"?[
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(100),
+                      child: Image.asset(
+                        "assets/images/doctora.png",
+                        height: 150,
+                        width: 150,
+                        fit: BoxFit.cover,
+                      ),
                     ),
-                  ),
+                  ]:[
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(100),
+                      child: Image.asset(
+                        "assets/images/doctor.png",
+                        height: 150,
+                        width: 150,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ],
+
                   SizedBox(height: 8),
                   Text(
                     widget.doctor['Nombre'],
