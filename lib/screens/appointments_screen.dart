@@ -75,7 +75,6 @@ class _DoctorsListScreenState extends State<AppointmentsScreen> {
                       itemBuilder:(context,index){
                         final cita = appointments[index];
                         final nombreDoctor = cita['NombreDoctor'] ?? 'Sin nombre';
-                        final genero=cita['Genero'] ?? 'Sin genero';
                         final direccion = cita['Direccion'] ?? '';
                         final especialidad = cita['Especialidad'] ?? '';
                         final inicio = (cita['Inicio'] as Timestamp).toDate();

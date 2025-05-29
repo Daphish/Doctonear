@@ -98,24 +98,6 @@ class _DoctorsListScreenState extends State<DoctorsListScreen> {
                     ],
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(right: 16.0, bottom: 8),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Image.asset("assets/images/filter.png", height: 25),
-                      const SizedBox(width: 8),
-                      const Text(
-                        'Filtrar',
-                        style: TextStyle(
-                          fontFamily: 'cuerpo',
-                          fontSize: 14,
-                          color: Color(0xFF003459),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
                 Expanded(
                   child: ListView.builder(
                     itemCount: filteredDoctors.length,
@@ -146,15 +128,27 @@ class _DoctorsListScreenState extends State<DoctorsListScreen> {
                                 // Información principal del doctor
                                 Row(
                                   children: [
-                                    ClipRRect(
-                                      borderRadius: BorderRadius.circular(100),
-                                      child: Image.asset(
-                                        "assets/images/doctor_avatar.jpg",
-                                        height: 75,
-                                        width: 75,
-                                        fit: BoxFit.cover,
+                                    ...doctor['Genero'] == 'Femenino' ? [
+                                      ClipRRect(
+                                        borderRadius: BorderRadius.circular(100),
+                                        child: Image.asset(
+                                          "assets/images/doctora.png",
+                                          height: 75,
+                                          width: 75,
+                                          fit: BoxFit.cover,
+                                        ),
                                       ),
-                                    ),
+                                    ]:[
+                                      ClipRRect(
+                                        borderRadius: BorderRadius.circular(100),
+                                        child: Image.asset(
+                                          "assets/images/doctor.png",
+                                          height: 75,
+                                          width: 75,
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                    ],
                                     const SizedBox(width: 12),
                                     Expanded(
                                       child: Column(
