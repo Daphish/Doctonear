@@ -226,11 +226,11 @@ class _DoctorsListScreenState extends State<AppointmentsScreen> {
                                               appointments.removeAt(index);
                                             });
                                             ScaffoldMessenger.of(context).showSnackBar(
-                                              SnackBar(content: Text('Cita cancelada')),
+                                              SnackBar(content: Text('Cita cancelada', style: TextStyle(color: Colors.white),), backgroundColor: con.Prussian_Blue,),
                                             );
                                           } catch (e) {
                                             ScaffoldMessenger.of(context).showSnackBar(
-                                              SnackBar(content: Text('Error al cancelar la cita')),
+                                              SnackBar(content: Text('Error al cancelar la cita', style: TextStyle(color: Colors.white),), backgroundColor: con.Mint_Green,),
                                             );
                                           }
                                         }

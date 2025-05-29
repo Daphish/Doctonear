@@ -14,6 +14,7 @@ class ScheduleAppointment extends StatefulWidget {
 }
 
 class _ScheduleAppointmentState extends State<ScheduleAppointment> {
+  bool isLoading = false;
   Singleton singleton = Singleton();
   DateTime? _selectedDate;
   String? _selectedHour;
@@ -169,7 +170,16 @@ class _ScheduleAppointmentState extends State<ScheduleAppointment> {
                 ElevatedButton(
                   onPressed: () async {
                     if (_selectedDate != null && _selectedHour != null) {
+                      setState(() {
+                        isLoading = true;
+                      });
                       await singleton.makeAppointment(widget.doctor, _selectedDate!, _selectedHour!);
+                      setState(() {
+                        isLoading = false;
+                      });
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Cita agendada', style: TextStyle(color: Colors.white),), backgroundColor: con.Prussian_Blue,),
+                      );
                       widget.backPress();
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
@@ -182,7 +192,7 @@ class _ScheduleAppointmentState extends State<ScheduleAppointment> {
                     padding: EdgeInsets.symmetric(horizontal: 100,vertical: 12),
                     elevation: 5,
                   ),
-                  child: Text(
+                  child: isLoading ? CircularProgressIndicator(color: Colors.white) : Text(
                     'Agendar cita',
                     style: TextStyle(
                         fontFamily: 'butLOg',

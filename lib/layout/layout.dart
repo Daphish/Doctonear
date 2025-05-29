@@ -56,9 +56,10 @@ class MainLayoutState extends State<MainLayout> {
           homeSubPageIndex=2;
         });
       }),
-      CommentsScreen(doctor: profileDoc, backPress:(){
+      CommentsScreen(doctor: profileDoc, backPress:(Map<String, dynamic> doctor){
         setState(() {
           homeSubPageIndex=2;
+          profileDoc = doctor;
         });
       })
     ];

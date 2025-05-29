@@ -261,6 +261,17 @@ class Singleton {
     }
   }
 
+  Future<void> makeComment(String comment, String doctorId) async {
+    try {
+      await FirebaseFirestore.instance.collection('Doctores').doc(doctorId).collection('Comentarios').doc().set({
+        'Comentario': comment,
+        'NombrePaciente': userData['Nombre']
+      });
+    } catch (e) {
+      print('Error al agregar comentario: $e');
+    }
+  }
+
   // Método para cerrar sesión
   Future<void> signOut() async {
     try {
