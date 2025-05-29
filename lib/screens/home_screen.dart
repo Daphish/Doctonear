@@ -112,16 +112,6 @@ class _HomeScreenState extends State<HomeScreen> {
                               fontSize: 16,
                               color: Color(0x80000000)
                           ),
-                          suffixIcon: IconButton(
-                            icon: arrowText ?
-                            Icon(Icons.keyboard_arrow_down_outlined, size: 20, color: Color(0xff007EA7)) :
-                            Icon(Icons.keyboard_arrow_up_outlined, size: 20, color: Color(0xff007EA7)),
-                            onPressed: () {
-                              setState(() {
-                                arrowText = !arrowText;
-                              });
-                            },
-                          ),
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(20),
                             borderSide: BorderSide(
