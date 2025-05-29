@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:medichub/const.dart' as con;
+import 'package:medichub/login.dart';
 import 'package:medichub/singleton.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -1026,7 +1027,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                              ),
                            ),
                            ElevatedButton(
-                             onPressed:(){},
+                             onPressed:() async {
+                               await singleton.signOut();
+                               Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Login()));
+                             },
                              style: ElevatedButton.styleFrom(
                                backgroundColor: con.Cerulean,
                                padding: EdgeInsets.symmetric(horizontal: 20),
@@ -1304,7 +1308,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                              ),
                            ),
                            ElevatedButton(
-                             onPressed:(){},
+                             onPressed:() async {
+                               await singleton.signOut();
+                               Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Login()));
+                             },
                              style: ElevatedButton.styleFrom(
                                backgroundColor: con.Cerulean,
                                padding: EdgeInsets.symmetric(horizontal: 20),
