@@ -6,6 +6,7 @@ import 'package:medichub/screens/profile_screen.dart';
 import 'package:medichub/screens/schedule_appointment.dart';
 import '../screens/home_screen.dart';
 import '../screens/doctors_list_screen.dart';
+import '../singleton.dart';
 
 class MainLayout extends StatefulWidget {
   const MainLayout({super.key});
@@ -20,7 +21,7 @@ class MainLayoutState extends State<MainLayout> {
   String searchQuery = "";
   Map<String, dynamic> profileDoc = {};
   List<Map<String, dynamic>> appointmentsDoc = [];
-
+  Singleton singleton = Singleton();
 
   @override
   Widget build(BuildContext context) {
@@ -82,10 +83,17 @@ class MainLayoutState extends State<MainLayout> {
         ),
         child: NavigationBar(
           destinations: [
-            NavigationDestination(
-              icon: Icon(Icons.alarm, color: currentPageIndex == 0 ? Color(0xFF007EA7) : Colors.white),
-              label: 'Citas',
-            ),
+            ...singleton.userData['Rol'] == 'Doctor' ? [
+              NavigationDestination(
+                icon: Icon(Icons.alarm, color: currentPageIndex == 0 ? Color(0xFF007EA7) : Colors.white),
+                label: 'Agenda',
+              ),
+            ]:[
+              NavigationDestination(
+                icon: Icon(Icons.alarm, color: currentPageIndex == 0 ? Color(0xFF007EA7) : Colors.white),
+                label: 'Citas',
+              ),
+            ],
             NavigationDestination(
               icon: Icon(Icons.home, color: currentPageIndex == 1 ? Color(0xFF007EA7) : Colors.white),
               label: 'Inicio',
