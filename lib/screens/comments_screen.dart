@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:medichub/const.dart' as con;
+import 'package:medichub/singleton.dart';
 
 class CommentsScreen extends StatefulWidget {
   final Map<String, dynamic> doctor;
-  final void Function() backPress;
+  final Function(Map<String, dynamic>) backPress;
   const CommentsScreen({super.key, required this.doctor, required this.backPress});
 
   @override
@@ -11,6 +12,9 @@ class CommentsScreen extends StatefulWidget {
 }
 
 class _CommentsScreenState extends State<CommentsScreen> {
+  bool isLoading = false;
+  Singleton singleton = Singleton();
+  final TextEditingController _controller = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,6 +62,7 @@ class _CommentsScreenState extends State<CommentsScreen> {
                     ),
                     SizedBox(height: 20,),
                     TextFormField(
+                      controller: _controller,
                       keyboardType: TextInputType.multiline,
                       minLines: 1,
                       maxLines: null,
@@ -93,14 +98,36 @@ class _CommentsScreenState extends State<CommentsScreen> {
                     ),
                     SizedBox(height: 50,),
                     ElevatedButton(
-                      onPressed: (){
+                      onPressed: () async {
+                        if (_controller.text.trim().isEmpty) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('Haz un comentario válido por favor', style: TextStyle(color: Colors.white),), backgroundColor: con.Prussian_Blue,),
+                          );
+                        } else {
+                          setState(() {
+                            isLoading = true;
+                          });
+                          await singleton.makeComment(_controller.text, widget.doctor['id']);
+                          widget.doctor['comentarios'].add({
+                            'Comentario': _controller.text,
+                            'NombrePaciente': singleton.userData['Nombre']
+                          });
+                          _controller.clear();
+                          setState(() {
+                            isLoading = false;
+                          });
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('Comentario agregado', style: TextStyle(color: Colors.white),), backgroundColor: con.Prussian_Blue,),
+                          );
+                          widget.backPress(widget.doctor);
+                        }
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: con.Prussian_Blue,
                         padding: EdgeInsets.symmetric(horizontal: 100,vertical: 12),
                         elevation: 5,
                       ),
-                      child: Text(
+                      child: isLoading ? CircularProgressIndicator(color: Colors.white) : Text(
                         'Enviar',
                         style: TextStyle(
                             fontFamily: 'butLOg',

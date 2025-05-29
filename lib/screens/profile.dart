@@ -137,7 +137,9 @@ class _ProfileState extends State<Profile> {
                         ),
                       ),
                       ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          widget.commentPress();
+                        },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: cons.Cerulean,
                           padding: EdgeInsets.symmetric(horizontal: 20),
