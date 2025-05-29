@@ -98,6 +98,7 @@ class Singleton {
             'Genero': gender,
             'Nombre': name,
             'Telefono': telephone,
+            'Rol': "Paciente"
           });
           print("Paciente registrado en Firestore");
         } catch (e) {
@@ -124,7 +125,7 @@ class Singleton {
     }
   }
 
-  Future<User?> registerDoctor(String email, String password, int edad, String name, String gender, int telephone, String cedula, String description, String direction, String services, String specialty,String office,Float32x4 costs, BuildContext context) async {
+  Future<User?> registerDoctor(String email, String password, int edad, String name, String gender, int telephone, String cedula, String description, String direction, String services, String specialty,String office, int costs, BuildContext context) async {
     try {
       UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: email,
@@ -138,7 +139,7 @@ class Singleton {
 
         try {
           await FirebaseFirestore.instance.collection('Doctores').doc(uid).set({
-            'Cedula': cedula,///poner mismo orden de la base de datos
+            'Cedula': cedula,
             'Consultorio': office,
             'Costo':costs,
             'Descripcion': description,
@@ -149,6 +150,7 @@ class Singleton {
             'Nombre': name,
             'Servicios': services,
             'Telefono': telephone,
+            'Rol': "Doctor"
           });
           print("Doctor registrado en Firestore");
         } catch (e) {
@@ -269,6 +271,44 @@ class Singleton {
       });
     } catch (e) {
       print('Error al agregar comentario: $e');
+    }
+  }
+
+  Future<void> updateDoctorProfile(Map<String, dynamic> updatedData) async {
+    try {
+      final uid = FirebaseAuth.instance.currentUser?.uid;
+      if (uid == null) throw 'Usuario no autenticado';
+
+      // Actualiza en Firestore
+      await FirebaseFirestore.instance
+          .collection('Doctores')
+          .doc(uid)
+          .update(updatedData);
+
+      userData.addAll(updatedData);
+
+      print('Perfil actualizado exitosamente');
+    } catch (e) {
+      print('Error al actualizar perfil: $e');
+    }
+  }
+
+  Future<void> updatePatientProfile(Map<String, dynamic> updatedData) async {
+    try {
+      final uid = FirebaseAuth.instance.currentUser?.uid;
+      if (uid == null) throw 'Usuario no autenticado';
+
+      // Actualiza en Firestore
+      await FirebaseFirestore.instance
+          .collection('Pacientes')
+          .doc(uid)
+          .update(updatedData);
+
+      userData.addAll(updatedData);
+
+      print('Perfil actualizado exitosamente');
+    } catch (e) {
+      print('Error al actualizar perfil: $e');
     }
   }
 

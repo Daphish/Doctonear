@@ -25,7 +25,6 @@ class _SignupState extends State<Signup> {
   final TextEditingController passController = TextEditingController();
   final TextEditingController nameController = TextEditingController();
   final TextEditingController ageController = TextEditingController();
-  final TextEditingController genderController = TextEditingController();
   final TextEditingController telephoneController = TextEditingController();
   final TextEditingController cedulaController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
@@ -60,80 +59,122 @@ class _SignupState extends State<Signup> {
     if (siHayInternet) {
       String email = emailController.text.trim();
       String password = passController.text.trim();
-      int edad = int.parse(ageController.text.trim());
+      int edad = -1;
+      if (ageController.text.isNotEmpty) {
+        edad = int.parse(ageController.text.trim());
+      }
+      int telephone = -1;
+      if (telephoneController.text.isNotEmpty) {
+        telephone = int.parse(telephoneController.text.trim());
+      }
       String name = nameController.text.trim();
-      String gender = genderController.text.trim();
-      int telephone = int.parse(telephoneController.text.trim());
-      String cedula = cedulaController.text.trim();
-      String description = descriptionController.text.trim();
-      String direction = directionController.text.trim();
-      String services = servicesController.text.trim();
-      String specialty = specialtyController.text.trim();
-      String office=officeController.text.trim();
-      Float32x4 costs=costsController.text.trim() as Float32x4;
 
       singleton.messageLogin = '';
 
-      if (email.isNotEmpty && password.isNotEmpty) {
-        if (isValidEmail(email.trim())) {
-          if (password.length >= 6) {
-            if(_selectedRole == "Paciente") {
-              _user = await singleton.registerPatient(email, password, edad, name, gender, telephone, context);
-              if (_user != null) {
-                setState(() {
-                  singleton.loader = false;
-                  Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder:
-                          (context)=>Login()));
-                });
-              } else {
-                if (singleton.messageLogin.isNotEmpty) {
-                  if (singleton.messageLogin.contains('uso')) {
-                    setState(() {
-                      singleton.loader = false;
-                    });
-                  } else {
-                    showSnackbar(3, 'Inicio de Sesión', singleton.messageLogin, context);
-                  }
-                }
-              }
-            } else if(_selectedRole == "Doctor"){
-              _user = await singleton.registerDoctor(email, password, edad, name, gender, telephone, cedula, description, direction, services, specialty,office,costs, context);
-              if (_user != null) {
-                setState(() {
-                  singleton.loader = false;
-                  Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder:
-                          (context)=>Login()));
-                });
-              } else {
-                if (singleton.messageLogin.isNotEmpty) {
-                  if (singleton.messageLogin.contains('uso')) {
-                    setState(() {
-                      singleton.loader = false;
-                    });
-                  } else {
-                    showSnackbar(3, 'Inicio de Sesión', singleton.messageLogin, context);
-                  }
-                }
-              }
-            }
-          } else {
-            showSnackbar(2, 'Inicio de Sesión', 'La contraseña es demasiado débil, min de 6 caracteres', context);
-          }
-        } else {
-          showSnackbar(3, 'Inicio de Sesión', 'El correo no tiene el formato correcto', context);
-        }
-      } else {
+      if (email.isEmpty || password.isEmpty) {
         showSnackbar(3, 'Inicio de Sesión', 'Todos los campos deben de estar llenos', context);
+        setState(() {
+          singleton.loader = false;
+        });
+        return;
+      }
+
+      if (!isValidEmail(email)) {
+        showSnackbar(3, 'Inicio de Sesión', 'El correo no tiene el formato correcto', context);
+        setState(() {
+          singleton.loader = false;
+        });
+        return;
+      }
+
+      if (password.length < 6) {
+        showSnackbar(2, 'Inicio de Sesión', 'La contraseña es demasiado débil, min de 6 caracteres', context);
+        setState(() {
+          singleton.loader = false;
+        });
+        return;
+      }
+
+      if (_selectedRole == "Paciente") {
+        // Validar campos específicos de paciente
+        if (edad == -1 || name.isEmpty || _selectedGenre == null || telephone == -1) {
+          showSnackbar(3, 'Registro', 'Todos los campos del paciente deben estar llenos', context);
+          setState(() {
+            singleton.loader = false;
+          });
+          return;
+        }
+
+        _user = await singleton.registerPatient(email, password, edad, name, _selectedGenre!, telephone, context);
+        if (_user != null) {
+          setState(() {
+            singleton.loader = false;
+            Navigator.pushReplacement(context,
+                MaterialPageRoute(builder:
+                    (context)=>Login()));
+          });
+        } else {
+          if (singleton.messageLogin.isNotEmpty) {
+            if (singleton.messageLogin.contains('uso')) {
+              setState(() {
+                singleton.loader = false;
+              });
+            } else {
+              showSnackbar(3, 'Inicio de Sesión', singleton.messageLogin, context);
+            }
+          }
+        }
+      }
+      else if (_selectedRole == "Doctor") {
+        // Validar campos específicos de doctor
+        String cedula = cedulaController.text.trim();
+        String description = descriptionController.text.trim();
+        String direction = directionController.text.trim();
+        String services = servicesController.text.trim();
+        String specialty = specialtyController.text.trim();
+        String office = officeController.text.trim();
+        int costs = -1;
+        if (costsController.text.trim().isNotEmpty) {
+          costs = int.parse(costsController.text.trim());
+        }
+
+        if (edad == -1 || name.isEmpty || _selectedGenre == null || telephone == -1 ||
+            cedula.isEmpty || description.isEmpty || direction.isEmpty ||
+            services.isEmpty || specialty.isEmpty || office.isEmpty) {
+          showSnackbar(3, 'Registro', 'Todos los campos del doctor deben estar llenos', context);
+          setState(() {
+            singleton.loader = false;
+          });
+          return;
+        }
+
+        _user = await singleton.registerDoctor(email, password, edad, name, _selectedGenre!, telephone,
+            cedula, description, direction, services, specialty, office, costs, context);
+        if (_user != null) {
+          setState(() {
+            singleton.loader = false;
+            Navigator.pushReplacement(context,
+                MaterialPageRoute(builder:
+                    (context)=>Login()));
+          });
+        } else {
+          if (singleton.messageLogin.isNotEmpty) {
+            if (singleton.messageLogin.contains('uso')) {
+              setState(() {
+                singleton.loader = false;
+              });
+            } else {
+              showSnackbar(3, 'Inicio de Sesión', singleton.messageLogin, context);
+            }
+          }
+        }
       }
     } else {
       showSnackbar(3, 'Sin conexión a internet', 'Favor revisa tu conexión a internet', context);
+      setState(() {
+        singleton.loader = false;
+      });
     }
-
-    setState(() {
-      singleton.loader = false;
-    });
   }
 
   @override
@@ -657,7 +698,11 @@ class _SignupState extends State<Signup> {
                         SizedBox(height: 15,),
                         ElevatedButton(
                           onPressed: (){
-                            register();
+                            try {
+                              register();
+                            } catch(e) {
+                              print(e);
+                            }
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: cons.Prussian_Blue,
