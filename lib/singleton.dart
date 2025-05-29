@@ -33,6 +33,35 @@ class Singleton {
   // Obtener el correo del usuario
   String? get userEmail => currentUser?.email;
 
+  Future<void> loadUserData(String uid) async {
+    try {
+      // Intentar cargar como doctor primero
+      final docSnapshot = await FirebaseFirestore.instance
+          .collection('Doctores')
+          .doc(uid)
+          .get();
+
+      if (docSnapshot.exists) {
+        userData = docSnapshot.data() as Map<String, dynamic>;
+      } else {
+        // Si no es doctor, intentar cargar como paciente
+        final pacienteSnapshot = await FirebaseFirestore.instance
+            .collection('Pacientes')
+            .doc(uid)
+            .get();
+
+        if (pacienteSnapshot.exists) {
+          userData = pacienteSnapshot.data() as Map<String, dynamic>;
+        } else {
+          throw Exception('Usuario no encontrado en ninguna colección');
+        }
+      }
+    } catch (e) {
+      print('Error cargando datos del usuario: $e');
+      rethrow;
+    }
+  }
+
   Future<User?> signIn(String email, String password) async {
     try {
       List<String> methods = await FirebaseAuth.instance.fetchSignInMethodsForEmail(email);
