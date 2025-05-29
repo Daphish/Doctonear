@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:medichub/screens/comments_screen.dart';
 import 'package:medichub/screens/profile.dart';
 import 'package:medichub/screens/appointments_screen.dart';
 import 'package:medichub/screens/profile_screen.dart';
+import 'package:medichub/screens/schedule_appointment.dart';
 import '../screens/home_screen.dart';
 import '../screens/doctors_list_screen.dart';
 
@@ -17,6 +19,8 @@ class MainLayoutState extends State<MainLayout> {
   int homeSubPageIndex = 0;
   String searchQuery = "";
   Map<String, dynamic> profileDoc = {};
+  List<Map<String, dynamic>> appointmentsDoc = [];
+
 
   @override
   Widget build(BuildContext context) {
@@ -36,6 +40,33 @@ class MainLayoutState extends State<MainLayout> {
       Profile(doctor: profileDoc, backPress:(){
         setState(() {
           homeSubPageIndex=1;
+        });
+      }, appointmentPress: (List<Map<String, dynamic>> appointments){
+        setState(() {
+          homeSubPageIndex=3;
+          appointmentsDoc = appointments;
+        });
+      }, commentPress: (){
+        setState(() {
+          homeSubPageIndex=4;
+        });
+      }),
+      ScheduleAppointment(appointments: appointmentsDoc, doctor: profileDoc, backPress:(){
+        setState(() {
+          homeSubPageIndex=2;
+        });
+      }, saveAppointment:(Map<String, dynamic> appointment){
+        setState(() {
+          homeSubPageIndex=2;
+        });
+      }),
+      CommentsScreen(doctor: profileDoc, backPress:(){
+        setState(() {
+          homeSubPageIndex=2;
+        });
+      }, saveComment:(String comment){
+        setState(() {
+          homeSubPageIndex=2;
         });
       })
     ];
